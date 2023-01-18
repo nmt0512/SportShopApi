@@ -45,15 +45,18 @@ public class OTPController {
     @ApiOperation(value = "Xác thực OTP")
     @GetMapping("/validate")
     public ResponseEntity validateOTP(@RequestBody OtpValidationDto otpDto) {
-        String valid = otpValidation.validateOTP(otpDto.getEmail(), otpDto.getOtp());
-        if(valid.equals(SystemConstant.OTP_ACCEPT))
+        Boolean valid = otpValidation.validateOTP(otpDto.getEmail(), otpDto.getOtp());
+        if(valid != null)
         {
-            otpService.clearOTP(otpDto.getEmail());
-            return ResponseEntity.ok("Correct OTP");
+            if(valid.equals(true))
+            {
+                otpService.clearOTP(otpDto.getEmail());
+                return ResponseEntity.ok("Correct OTP");
+            }
+            else if(valid.equals(false))
+                return ResponseEntity.status(502).body("Incorrect OTP");
         }
-        else if(valid.equals(SystemConstant.OTP_REJECT))
-            return ResponseEntity.status(502).body("Incorrect OTP");
-        else if(valid.equals(SystemConstant.OTP_EXPIRED))
+        else
             return ResponseEntity.status(503).body("OTP is expired");
         return ResponseEntity.badRequest().build();
     }

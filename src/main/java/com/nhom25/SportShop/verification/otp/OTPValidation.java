@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class OTPValidation {
     @Autowired
     private OTPService otpService;
-    public String validateOTP(String email, Integer otpReceived)
+    public Boolean validateOTP(String email, Integer otpReceived)
     {
         int serverOtp = otpService.getOtp(email);
         if(serverOtp > 0)
@@ -16,12 +16,12 @@ public class OTPValidation {
             if(serverOtp == otpReceived)
             {
                 otpService.clearOTP(email);
-                return SystemConstant.OTP_ACCEPT;
+                return true;
             }
             else
-                return SystemConstant.OTP_REJECT;
+                return false;
         }
         else
-            return SystemConstant.OTP_EXPIRED;
+            return null;
     }
 }
