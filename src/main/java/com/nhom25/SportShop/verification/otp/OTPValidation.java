@@ -1,6 +1,5 @@
 package com.nhom25.SportShop.verification.otp;
 
-import com.nhom25.SportShop.constant.SystemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/home/user/**", "/cart/**").hasRole("USER")
                 .antMatchers("/admin/bill/**", "/admin/item/**", "/admin/item/category/**").hasRole("ADMIN")
                 .antMatchers("/login", "/otp/**", "/refresh-token", "/home/**"
-                        , "/home/category/**", "/home/general/**", "/**", "/home/user").permitAll()
+                        , "/home/category/**", "/home/general/**", "/**", "/home/user/**").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)

@@ -2,7 +2,9 @@ package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.BillDetail;
 import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
+import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.CartService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class UserCartController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCartItem(@PathVariable("id") Integer cartId) {
         cartService.deleteCartItem(cartId);
-        return ResponseEntity.ok("Delete successfully");
+        return ResponseUtils.success();
     }
 
     @ApiOperation(value = "Thêm sản phẩm vào giỏ hàng")
@@ -45,8 +47,8 @@ public class UserCartController {
 
     @ApiOperation(value = "Thanh toán sản phẩm trong giỏ hàng")
     @PutMapping("/payment")
-    public BillDetail paymentCart(@RequestBody List<Cart> listCart) {
+    public BillDetail paymentCart(@RequestBody PaymentCartDto paymentCartDto) {
         //test
-        return cartService.paymentCart(listCart);
+        return cartService.paymentCart(paymentCartDto);
     }
 }

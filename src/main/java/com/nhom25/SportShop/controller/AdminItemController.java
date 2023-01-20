@@ -1,6 +1,7 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.ItemService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,6 @@ public class AdminItemController {
     @DeleteMapping("/delete")
     public ResponseEntity deleteItem(@RequestBody List<Integer> listId){
         itemService.deleteItem(listId);
-        return ResponseEntity.ok("Delete successfully");
+        return ResponseUtils.success();
     }
 }

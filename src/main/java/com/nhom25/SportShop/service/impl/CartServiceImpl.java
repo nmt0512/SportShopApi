@@ -2,8 +2,10 @@ package com.nhom25.SportShop.service.impl;
 
 import com.nhom25.SportShop.dto.BillDetail;
 import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
 import com.nhom25.SportShop.repository.CartRepository;
+import com.nhom25.SportShop.repository.UserRepository;
 import com.nhom25.SportShop.security.UserDetailsServiceImpl;
 import com.nhom25.SportShop.service.BillService;
 import com.nhom25.SportShop.service.CartService;
@@ -24,6 +26,8 @@ public class CartServiceImpl implements CartService {
     private ItemService itemService;
     @Autowired
     private UserDetailsServiceImpl userDetailService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public Cart addToCart(ItemDto itemDto, Short quantity) {
@@ -67,13 +71,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public BillDetail paymentCart(List<Cart> listCart) {
-        for(Cart cart: listCart)
+    public BillDetail paymentCart(PaymentCartDto paymentCartDto) {
+        List<Cart> cartList = paymentCartDto.getCartList();
+        for(Cart cart: cartList)
         {
             cartRepo.deleteById(cart.getId());
         }
-        itemService.subtractPaymentItem(listCart);
-        return billService.saveBillFromCart(listCart);
+        itemService.subtractPaymentItem(cartList);
+        userRepository.updateUserAddress(userDetailService.getCurrentUsername(), paymentCartDto.getAddress());
+        return billService.saveBillFromCart(cartList);
     }
 
 }

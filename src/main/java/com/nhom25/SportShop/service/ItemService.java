@@ -7,7 +7,6 @@ import com.nhom25.SportShop.entity.Cart;
 
 public interface ItemService {
 	List<ItemDto> findAllItem();
-	List<ItemDto> findItemByCategory(String categoryCode);
 	List<ItemDto> searchByName(String name);
 	List<ItemDto> findItemByGeneralCategory(String gcCode);
 	ItemDto findById(Integer itemId);
@@ -15,4 +14,5 @@ public interface ItemService {
 	void deleteItem(List<Integer> listItemId);
 	void subtractPaymentItem(List<Cart> listCart);
 	Short getItemQuantity(Integer id);
+	List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, Integer price);
 }

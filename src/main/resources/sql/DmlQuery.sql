@@ -59,3 +59,4 @@ INSERT INTO Cart(Username, ItemId, Quantity, Price) VALUES('u2', 1, 2, 240000)
 
 INSERT INTO Item(Code, Name, CategoryCode, Size, Color, Quantity, Price, CreatedDate) 
 VALUES('qua-bong-da-uefa-champions-league-2020', N'Quả bóng đá UEFA Champions League 2020', 'qua-bong-da', '5', 'pink', 20, 600000, GETDATE())
+
