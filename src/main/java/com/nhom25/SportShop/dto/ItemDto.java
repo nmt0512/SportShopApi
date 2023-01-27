@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 public class ItemDto {
 	private Integer id;
 	private String name;
+	private String code;
 	private String description;
-	private String categoryName;
 	private String categoryCode;
 	private List<String> image;
 	private String size;

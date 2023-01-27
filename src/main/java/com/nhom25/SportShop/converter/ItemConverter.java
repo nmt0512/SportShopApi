@@ -1,14 +1,10 @@
 package com.nhom25.SportShop.converter;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
+import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.entity.Item;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.nhom25.SportShop.dto.ItemDto;
-import com.nhom25.SportShop.entity.Item;
 
 @Component
 public class ItemConverter {

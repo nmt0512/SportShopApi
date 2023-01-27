@@ -4,7 +4,9 @@ import com.nhom25.SportShop.dto.BillDetail;
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
+import com.nhom25.SportShop.entity.Item;
 import com.nhom25.SportShop.repository.CartRepository;
+import com.nhom25.SportShop.repository.ItemRepository;
 import com.nhom25.SportShop.repository.UserRepository;
 import com.nhom25.SportShop.security.UserDetailsServiceImpl;
 import com.nhom25.SportShop.service.BillService;
@@ -28,20 +30,23 @@ public class CartServiceImpl implements CartService {
     private UserDetailsServiceImpl userDetailService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ItemRepository itemRepository;
 
     @Override
     public Cart addToCart(ItemDto itemDto, Short quantity) {
-        if(itemService.getItemQuantity(itemDto.getId()) - quantity < 0)
+        Item item = itemRepository.findByCodeAndColorAndSize(itemDto.getCode(), itemDto.getColor(), itemDto.getSize());
+        if(itemService.getItemQuantity(item.getId()) - quantity < 0)
         {
             return null;
         }
-        Cart cartEntity = cartRepo.findByUsernameAndItemId(userDetailService.getCurrentUsername(), itemDto.getId());
+        Cart cartEntity = cartRepo.findByUsernameAndItemId(userDetailService.getCurrentUsername(), item.getId());
         if(cartEntity == null)
         {
             cartEntity = new Cart();
-            cartEntity.setItemId(itemDto.getId());
+            cartEntity.setItemId(item.getId());
             cartEntity.setQuantity(quantity);
-            cartEntity.setPrice(itemDto.getPrice() * (int)quantity);
+            cartEntity.setPrice(item.getPrice() * (int)quantity);
             cartEntity.setUsername(userDetailService.getCurrentUsername());
         }
         else

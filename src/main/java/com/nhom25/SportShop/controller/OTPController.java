@@ -35,9 +35,8 @@ public class OTPController {
             emailService.sendOTP(email, otp);
             return ResponseUtils.created();
         } catch (MailException e) {
-            e.printStackTrace();
+            return ResponseUtils.error(500, "Send OTP failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return ResponseUtils.error(500, "Send OTP failed", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ApiOperation(value = "Xác thực OTP")
