@@ -1,6 +1,7 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.BillDetail;
+import com.nhom25.SportShop.dto.CartDto;
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
@@ -13,22 +14,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/cart")
 public class UserCartController {
     @Autowired
     private CartService cartService;
 
+    @ApiOperation(value = "Lấy tất cả sản phẩm trong giỏ hàng")
     @GetMapping
-    public List<Cart> viewCart() {
+    public List<CartDto> viewCart() {
         return cartService.getAllItemInCart();
     }
 
-    @ApiOperation(value = "Chỉnh sửa sản phẩm giỏ hàng")
-    @PutMapping
-    public Cart updateCartItem(@RequestBody Cart cart) {
-        return cartService.updateCartItem(cart);
-    }
+//    @ApiOperation(value = "Chỉnh sửa sản phẩm giỏ hàng")
+//    @PutMapping
+//    public Cart updateCartItem(@RequestBody Cart cart) {
+//        return cartService.updateCartItem(cart);
+//    }
 
     @ApiOperation(value = "Xóa sản phẩm trong giỏ hàng")
     @DeleteMapping("/{id}")
@@ -41,7 +44,6 @@ public class UserCartController {
     @PostMapping
     public Cart addToCart(@RequestBody ItemDto itemDto, @RequestParam(name = "quantity") Short quantity)
     {
-        //test
         return cartService.addToCart(itemDto, quantity);
     }
 

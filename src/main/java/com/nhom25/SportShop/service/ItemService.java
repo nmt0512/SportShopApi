@@ -13,6 +13,6 @@ public interface ItemService {
 	ItemDto saveItem(ItemDto itemDto);
 	void deleteItem(List<Integer> listItemId);
 	void subtractPaymentItem(List<Cart> listCart);
-	Short getItemQuantity(Integer id);
 	List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, Integer price);
+	List<ItemDto> findLatestItemInWeek();
 }

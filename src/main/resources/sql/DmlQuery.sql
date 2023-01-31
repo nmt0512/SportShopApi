@@ -58,5 +58,6 @@ INSERT INTO BillItem(BillId, ItemId, Quantity, Price) VALUES(3, 8, 1, 600000)
 INSERT INTO Cart(Username, ItemId, Quantity, Price) VALUES('u2', 1, 2, 240000)
 
 INSERT INTO Item(Code, Name, CategoryCode, Size, Color, Quantity, Price, CreatedDate) 
-VALUES('qua-bong-da-uefa-champions-league-2020', N'Quả bóng đá UEFA Champions League 2020', 'qua-bong-da', '5', 'pink', 20, 600000, GETDATE())
+VALUES('qua-bong-da-uefa-champions-league-2021', N'Quả bóng đá UEFA Champions League 2021', 'dung-cu_bong-da', '5', 'white', 20, 700000, GETDATE())
 
+SELECT * FROM Item WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7

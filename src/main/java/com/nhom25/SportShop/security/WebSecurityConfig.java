@@ -44,8 +44,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/home/user/**", "/cart/**").hasRole("USER")
                 .antMatchers("/admin/bill/**", "/admin/item/**", "/admin/item/category/**").hasRole("ADMIN")
-                .antMatchers("/login", "/otp/**", "/refresh-token", "/home/**"
-                        , "/home/category/**", "/home/general/**", "/**", "/home/user/**").permitAll()
+                .antMatchers("/login", "/otp/**", "/refresh-token", "/home/**", "/guest/cart/**"
+                        , "/home/category/**", "/home/general/**", "/**", "/home/user/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)

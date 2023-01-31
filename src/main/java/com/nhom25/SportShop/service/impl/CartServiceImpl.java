@@ -1,6 +1,8 @@
 package com.nhom25.SportShop.service.impl;
 
+import com.nhom25.SportShop.converter.CartConverter;
 import com.nhom25.SportShop.dto.BillDetail;
+import com.nhom25.SportShop.dto.CartDto;
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
@@ -32,11 +34,13 @@ public class CartServiceImpl implements CartService {
     private UserRepository userRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private CartConverter converter;
 
     @Override
     public Cart addToCart(ItemDto itemDto, Short quantity) {
         Item item = itemRepository.findByCodeAndColorAndSize(itemDto.getCode(), itemDto.getColor(), itemDto.getSize());
-        if(itemService.getItemQuantity(item.getId()) - quantity < 0)
+        if(item.getQuantity() - quantity < 0)
         {
             return null;
         }
@@ -58,17 +62,22 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<Cart> getAllItemInCart() {
-        List<Cart> result = new ArrayList<>();
-        //test
-        result.addAll(cartRepo.findByUsername(userDetailService.getCurrentUsername()));
+    public List<CartDto> getAllItemInCart() {
+        List<CartDto> result = new ArrayList<>();
+        for(Cart cart: cartRepo.findByUsername(userDetailService.getCurrentUsername()))
+        {
+            ItemDto itemDto = itemService.findById(cart.getItemId());
+            CartDto cartDto = converter.toDto(cart);
+            cartDto.setItemDto(itemDto);
+            result.add(cartDto);
+        }
         return result;
     }
 
-    @Override
-    public Cart updateCartItem(Cart cart) {
-        return cartRepo.save(cart);
-    }
+//    @Override
+//    public Cart updateCartItem(Cart cart) {
+//        return cartRepo.save(cart);
+//    }
 
     @Override
     public void deleteCartItem(Integer cartId) {
@@ -86,5 +95,4 @@ public class CartServiceImpl implements CartService {
         userRepository.updateUserAddress(userDetailService.getCurrentUsername(), paymentCartDto.getAddress());
         return billService.saveBillFromCart(cartList);
     }
-
 }

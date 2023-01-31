@@ -14,15 +14,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 public class AuthenticationController {
     @Autowired
@@ -41,7 +39,6 @@ public class AuthenticationController {
         if (userDetails.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")))
             return ResponseEntity.ok(new LoginResponseDto(token, true));
         return ResponseEntity.ok(new LoginResponseDto(token, false));
-//        return ResponseEntity.badRequest().body("User is already login");
     }
 
     @ApiOperation(value = "Refresh JWT")

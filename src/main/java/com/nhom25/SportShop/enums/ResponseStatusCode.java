@@ -71,14 +71,7 @@ public enum ResponseStatusCode {
     INSUFFICIENT_STORAGE(507, "Insufficient Storage"),
     LOOP_DETECTED(508, "Loop Detected"),
     NOT_EXTENDED(510, "Not Extended"),
-    NETWORK_AUTHENTICATION_REQUIRED(511, "Network Authentication Required"),
-
-    // Other
-    CALL_API_FAIL(104, "No response from service"),
-    VALIDATE_PRICE_NOT_LO(10001, "Chỉ được nhập giá với lệnh LO"),
-    VALIDATE_PRICE_NOT_NULL(10002, "Giá bắt buộc phải nhập với lệnh LO"),
-    ARGUMENT_TYPE_MISMATCH(400, "Required type %s parameter '%s' is not match"),
-    AFACCTNO_INVALID(400, "Số tiểu khoản không hợp lệ");
+    NETWORK_AUTHENTICATION_REQUIRED(511, "Network Authentication Required");
 
     private final int value;
     private final String description;

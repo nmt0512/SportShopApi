@@ -103,11 +103,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Short getItemQuantity(Integer id) {
-        return itemRepo.getById(id).getQuantity();
-    }
-
-    @Override
     public List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, Integer price) {
         List<ItemDto> result = findItemByGeneralCategory(gcCode);
         List<ItemDto> removeList = new ArrayList<>();
@@ -128,6 +123,18 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         result.removeAll(removeList);
+        return result;
+    }
+
+    @Override
+    public List<ItemDto> findLatestItemInWeek() {
+        List<ItemDto> result = new ArrayList<>();
+        for (Item e : itemRepo.findLatestItemInWeek()) {
+            ItemDto dto = converter.toDto(e);
+            List<Image> listImage = imageRepo.findByItemId(e.getId());
+            dto = setImageForDto(dto, listImage);
+            result.add(dto);
+        }
         return result;
     }
 

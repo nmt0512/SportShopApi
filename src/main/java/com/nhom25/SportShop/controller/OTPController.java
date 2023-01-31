@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/otp")
 public class OTPController {
@@ -28,7 +29,7 @@ public class OTPController {
 
     @ApiOperation(value = "Tạo mã OTP")
     @GetMapping("/generate-otp")
-    public ResponseEntity generateOTP(@ApiParam(value = "Email người dùng", required = true, example = "user@gmail.com")
+    public ResponseEntity generateOTP(@ApiParam(value = "Email người dùng", required = true, defaultValue = "user@gmail.com")
                                       @RequestParam("email") String email) {
         try {
             Integer otp = otpService.generateOTP(email);

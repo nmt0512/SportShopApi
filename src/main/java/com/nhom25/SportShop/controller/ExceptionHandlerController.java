@@ -4,9 +4,11 @@ import com.nhom25.SportShop.response.ResponseUtils;
 import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@CrossOrigin(maxAge = 3600)
 @RestControllerAdvice
 public class ExceptionHandlerController {
 
@@ -15,5 +17,4 @@ public class ExceptionHandlerController {
     {
         return ResponseUtils.error(400, "Bad Request", HttpStatus.BAD_REQUEST);
     }
-
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/home")
 public class HomeItemController {
@@ -48,5 +49,12 @@ public class HomeItemController {
 	@GetMapping("/{id}")
 	public ItemDto viewItemById(@PathVariable("id") Integer id){
 		return itemService.findById(id);
+	}
+
+	@ApiOperation(value = "Danh sách sản phẩm mới nhất trong vòng 1 tuần")
+	@GetMapping("/latest")
+	public List<ItemDto> getLatestItemInWeek()
+	{
+		return itemService.findLatestItemInWeek();
 	}
 }

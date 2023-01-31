@@ -2,7 +2,9 @@ package com.nhom25.SportShop.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Item {
+public class Item implements Serializable {
 	@Id
 	@Column(name = "ItemId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

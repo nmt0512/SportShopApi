@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/admin/bill")
 public class AdminBillController {
@@ -31,15 +32,15 @@ public class AdminBillController {
 
     @ApiOperation(value = "Lấy thông tin các Bill theo ngày")
     @GetMapping("/day")
-    public List<BillDetail> getBillByDay(@ApiParam(value = "Ngày", example = "02/01/2023") @RequestParam(name = "param") String day) {
+    public List<BillDetail> getBillByDay(@ApiParam(value = "Ngày", defaultValue = "02/01/2023") @RequestParam(name = "param") String day) {
         return billService.findBillByDay(day);
     }
 
     @ApiOperation(value = "Lấy thông tin Bill theo tháng")
     @GetMapping("/month")
-    public List<BillDetail> getBillByMonth(@ApiParam(value = "Ngày", example = "01/2023") @RequestParam(name = "param") String date)
+    public List<BillDetail> getBillByMonth(@ApiParam(value = "Tháng", defaultValue = "01/2023") @RequestParam(name = "param") String month)
     {
-        return billService.findBillByMonth(date);
+        return billService.findBillByMonth(month);
     }
 
     @ApiOperation(value = "Duyệt Bill")
