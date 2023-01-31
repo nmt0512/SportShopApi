@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@CrossOrigin(maxAge = 3600)
 @RestControllerAdvice
 public class ExceptionHandlerController {
 

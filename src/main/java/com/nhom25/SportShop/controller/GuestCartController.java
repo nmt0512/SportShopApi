@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/guest/cart")
-@CrossOrigin(maxAge = 3600)
 public class GuestCartController {
     @Autowired
     private GuestCartService service;

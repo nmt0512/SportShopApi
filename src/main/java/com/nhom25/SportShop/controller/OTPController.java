@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/otp")
 public class OTPController {

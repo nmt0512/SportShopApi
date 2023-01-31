@@ -14,11 +14,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class SportShopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SportShopApplication.class, args);
-//		final NgrokClient ngrokClient = new NgrokClient.Builder().build();
-//		final CreateTunnel createTunnel = new CreateTunnel.Builder()
-//				.withAddr(8080)
-//				.build();
-//		final Tunnel tunnel = ngrokClient.connect(createTunnel);
+		final NgrokClient ngrokClient = new NgrokClient.Builder().build();
+		final CreateTunnel createTunnel = new CreateTunnel.Builder()
+				.withAddr(8080)
+				.build();
+		final Tunnel tunnel = ngrokClient.connect(createTunnel);
 	}
 
 }

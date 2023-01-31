@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
-@CrossOrigin(maxAge = 3600)
 @RestController
 public class AuthenticationController {
     @Autowired

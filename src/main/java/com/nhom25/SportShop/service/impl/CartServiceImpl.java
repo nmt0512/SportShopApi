@@ -40,7 +40,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart addToCart(ItemDto itemDto, Short quantity) {
         Item item = itemRepository.findByCodeAndColorAndSize(itemDto.getCode(), itemDto.getColor(), itemDto.getSize());
-        if(item.getQuantity() - quantity < 0)
+        if(item.getQuantity() < quantity)
         {
             return null;
         }
