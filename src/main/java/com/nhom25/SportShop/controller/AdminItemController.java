@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(allowedHeaders = "Authorization")
 @RestController
 @RequestMapping("/admin/item")
 public class AdminItemController {

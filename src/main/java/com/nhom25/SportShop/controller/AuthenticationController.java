@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Objects;
 
+@CrossOrigin(allowedHeaders = "Authorization")
 @RestController
 public class AuthenticationController {
     @Autowired
