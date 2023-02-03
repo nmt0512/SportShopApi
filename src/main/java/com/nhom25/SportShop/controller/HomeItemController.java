@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/home")
 public class HomeItemController {

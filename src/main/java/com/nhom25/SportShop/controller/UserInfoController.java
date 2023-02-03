@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(allowedHeaders = "Authorization")
+@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/home")
 public class UserInfoController {

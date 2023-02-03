@@ -9,7 +9,7 @@ import com.nhom25.SportShop.entity.Cart;
 import java.util.List;
 
 public interface CartService {
-    Cart addToCart(ItemDto itemDto, Short quantity);
+    Cart addToCart(ItemDto itemDto);
     List<CartDto> getAllItemInCart();
 //    Cart updateCartItem(Cart cart);
     void deleteCartItem(Integer cartId);

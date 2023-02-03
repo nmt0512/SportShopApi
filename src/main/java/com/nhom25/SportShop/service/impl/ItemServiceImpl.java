@@ -2,6 +2,7 @@ package com.nhom25.SportShop.service.impl;
 
 import com.nhom25.SportShop.converter.ItemConverter;
 import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.dto.ItemRequestDto;
 import com.nhom25.SportShop.entity.Cart;
 import com.nhom25.SportShop.entity.Category;
 import com.nhom25.SportShop.entity.Image;
@@ -13,7 +14,6 @@ import com.nhom25.SportShop.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,20 +77,44 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto saveItem(ItemDto itemDto) {
-        Item itemEntity = converter.toEntity(itemDto);
-        if (itemEntity.getId() == null) {
-            itemEntity.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+    public List<ItemDto> addItem(ItemRequestDto itemRequestDto) {
+        List<ItemDto> result = new ArrayList<>();
+        List<Item> itemEntityList = converter.toEntityList(itemRequestDto);
+        for(Item entity: itemRepo.saveAll(itemEntityList))
+        {
+            for(String imageLink: itemRequestDto.getImages())
+            {
+                Image image = new Image();
+                image.setItemId(entity.getId());
+                image.setLink(imageLink);
+                imageRepo.save(image);
+            }
+            ItemDto itemDto = converter.toDto(entity);
+            itemDto.setImage(itemRequestDto.getImages());
+            result.add(itemDto);
         }
-        itemEntity.setCode(convertNameToCode(itemEntity.getName()));
-        return converter.toDto(itemRepo.save(itemEntity));
+        return result;
     }
 
     @Override
-    public void deleteItem(List<Integer> listItemId) {
-        for (Integer id : listItemId) {
-            itemRepo.deleteById(id);
+    public List<ItemDto> updateItem(List<ItemDto> itemDtoList) {
+        List<ItemDto> result = new ArrayList<>();
+        for(ItemDto dto: itemDtoList)
+        {
+            Item newEntity = converter.toEntity(dto);
+            Item oldEntity = itemRepo.getById(dto.getId());
+            newEntity.setCode(convertNameToCode(newEntity.getName()));
+            newEntity.setCreatedDate(oldEntity.getCreatedDate());
+            newEntity.setCategoryCode(oldEntity.getCategoryCode());
+            result.add(converter.toDto(itemRepo.save(newEntity)));
         }
+        return result;
+    }
+
+    @Override
+    public void deleteItem(Integer itemId) {
+        imageRepo.deleteByItemId(itemId);
+        itemRepo.deleteById(itemId);
     }
 
     @Override
@@ -138,13 +162,6 @@ public class ItemServiceImpl implements ItemService {
         return result;
     }
 
-    private String convertNameToCode(String name) {
-        String temp = Normalizer.normalize(name, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(temp).replaceAll("").toLowerCase()
-                .replaceAll(" ", "-").replaceAll("đ", "d");
-    }
-
     private ItemDto setImageForDto(ItemDto dto, List<Image> listImage) {
         List<String> listLink = new ArrayList<>();
         for (Image image : listImage) {
@@ -152,6 +169,13 @@ public class ItemServiceImpl implements ItemService {
         }
         dto.setImage(listLink);
         return dto;
+    }
+
+    private String convertNameToCode(String name) {
+        String temp = Normalizer.normalize(name, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(temp).replaceAll("").toLowerCase()
+                .replaceAll(" ", "-").replaceAll("đ", "d");
     }
 
 }

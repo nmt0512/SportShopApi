@@ -42,9 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/home/user/**", "/cart/**").hasRole("USER")
-                .antMatchers("/admin/bill/**", "/admin/item/**", "/admin/item/category/**").hasRole("ADMIN")
+//                .antMatchers("/admin/bill/**", "/admin/item/**").hasRole("ADMIN")
                 .antMatchers("/login", "/otp/**", "/refresh-token", "/home/**", "/guest/cart/**"
-                        , "/home/category/**", "/home/general/**", "/**", "/home/user/**", "/swagger-ui.html").permitAll()
+                        , "/home/category/**", "/home/general/**", "/**", "/home/user/**", "/swagger-ui.html",
+                        "/admin/bill/**", "/admin/item/**").permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)

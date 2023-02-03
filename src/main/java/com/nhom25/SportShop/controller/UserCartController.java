@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(allowedHeaders = "Authorization")
+@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/cart")
 public class UserCartController {
@@ -42,9 +42,9 @@ public class UserCartController {
 
     @ApiOperation(value = "Thêm sản phẩm vào giỏ hàng")
     @PostMapping
-    public Cart addToCart(@RequestBody ItemDto itemDto, @RequestParam(name = "quantity") Short quantity)
+    public Cart addToCart(@RequestBody ItemDto itemDto)
     {
-        return cartService.addToCart(itemDto, quantity);
+        return cartService.addToCart(itemDto);
     }
 
     @ApiOperation(value = "Thanh toán sản phẩm trong giỏ hàng")

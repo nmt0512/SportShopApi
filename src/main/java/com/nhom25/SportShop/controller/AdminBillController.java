@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(allowedHeaders = "Authorization")
+@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/admin/bill")
 public class AdminBillController {

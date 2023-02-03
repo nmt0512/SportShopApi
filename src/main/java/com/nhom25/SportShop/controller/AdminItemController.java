@@ -1,6 +1,7 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.dto.ItemRequestDto;
 import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.ItemService;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(allowedHeaders = "Authorization")
+@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/admin/item")
 public class AdminItemController {
@@ -19,20 +20,20 @@ public class AdminItemController {
 
     @ApiOperation(value = "Thêm sản phẩm")
     @PostMapping("/save")
-    public ItemDto addItem(@RequestBody ItemDto itemDto){
-        return itemService.saveItem(itemDto);
+    public List<ItemDto> addItem(@RequestBody ItemRequestDto itemRequestDto){
+        return itemService.addItem(itemRequestDto);
     }
 
     @ApiOperation(value = "Chỉnh sửa sản phẩm")
     @PutMapping("/save")
-    public ItemDto updateItem(@RequestBody ItemDto itemDto){
-        return itemService.saveItem(itemDto);
+    public List<ItemDto> updateItem(@RequestBody List<ItemDto> itemDtoList){
+        return itemService.updateItem(itemDtoList);
     }
 
     @ApiOperation(value = "Xóa sản phẩm")
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteItem(@RequestBody List<Integer> listId){
-        itemService.deleteItem(listId);
+    @PostMapping("/delete")
+    public ResponseEntity deleteItem(@RequestParam("param") Integer itemId) {
+        itemService.deleteItem(itemId);
         return ResponseUtils.success();
     }
 }

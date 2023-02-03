@@ -6,7 +6,6 @@ import com.nhom25.SportShop.dto.CartDto;
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
-import com.nhom25.SportShop.entity.Item;
 import com.nhom25.SportShop.repository.CartRepository;
 import com.nhom25.SportShop.repository.ItemRepository;
 import com.nhom25.SportShop.repository.UserRepository;
@@ -38,25 +37,22 @@ public class CartServiceImpl implements CartService {
     private CartConverter converter;
 
     @Override
-    public Cart addToCart(ItemDto itemDto, Short quantity) {
-        Item item = itemRepository.findByCodeAndColorAndSize(itemDto.getCode(), itemDto.getColor(), itemDto.getSize());
-        if(item.getQuantity() < quantity)
-        {
-            return null;
-        }
-        Cart cartEntity = cartRepo.findByUsernameAndItemId(userDetailService.getCurrentUsername(), item.getId());
+    public Cart addToCart(ItemDto itemDto) {
+        Cart cartEntity = cartRepo.findByUsernameAndItemId(userDetailService.getCurrentUsername(), itemDto.getId());
         if(cartEntity == null)
         {
             cartEntity = new Cart();
-            cartEntity.setItemId(item.getId());
-            cartEntity.setQuantity(quantity);
-            cartEntity.setPrice(item.getPrice() * (int)quantity);
+            cartEntity.setItemId(itemDto.getId());
+            cartEntity.setQuantity(itemDto.getQuantity());
+            cartEntity.setPrice(itemDto.getPrice());
             cartEntity.setUsername(userDetailService.getCurrentUsername());
         }
         else
         {
             short oldQuantity = cartEntity.getQuantity();
-            cartEntity.setQuantity((short) (oldQuantity + quantity));
+            Integer oldPrice = cartEntity.getPrice();
+            cartEntity.setQuantity((short) (oldQuantity + itemDto.getQuantity()));
+            cartEntity.setPrice(itemDto.getPrice() + oldPrice);
         }
         return cartRepo.save(cartEntity);
     }

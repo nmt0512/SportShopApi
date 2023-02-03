@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/otp")
 public class OTPController {
@@ -35,7 +36,7 @@ public class OTPController {
             emailService.sendOTP(email, otp);
             return ResponseUtils.created();
         } catch (MailException e) {
-            return ResponseUtils.error(500, "Send OTP failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseUtils.error(501, "Send OTP failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
