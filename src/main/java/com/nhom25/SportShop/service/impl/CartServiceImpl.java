@@ -70,10 +70,13 @@ public class CartServiceImpl implements CartService {
         return result;
     }
 
-//    @Override
-//    public Cart updateCartItem(Cart cart) {
-//        return cartRepo.save(cart);
-//    }
+    @Override
+    public Cart updateCart(CartDto cartDto) {
+        Cart oldCart = cartRepo.getById(cartDto.getId());
+        oldCart.setQuantity(cartDto.getQuantity());
+        oldCart.setPrice(cartDto.getPrice());
+        return cartRepo.save(oldCart);
+    }
 
     @Override
     public void deleteCartItem(Integer cartId) {

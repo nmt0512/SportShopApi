@@ -30,7 +30,7 @@ SELECT * FROM Image
 
 SELECT * FROM Bill WHERE YEAR(Time) = 2023 AND MONTH(Time) = 1
 
-UPDATE Item SET Price = 80000 WHERE ItemId = 3
+UPDATE Item SET Quantity = 1 WHERE ItemId = 62
 
 UPDATE Item SET Image = (SELECT BulkColumn
 FROM OPENROWSET(Bulk 'C:\Users\Thieu\Downloads\ao-juventus-away-2020.jpg', SINGLE_BLOB) AS img )
@@ -61,3 +61,5 @@ INSERT INTO Item(Code, Name, CategoryCode, Size, Color, Quantity, Price, Created
 VALUES('qua-bong-da-uefa-champions-league-2022', N'Quả bóng đá UEFA Champions League 2022', 'dung-cu_bong-da', '5', 'white', 20, 700000, GETDATE())
 
 SELECT * FROM Item WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7
+
+INSERT INTO Category(GeneralCode, Code, Name) VALUES('trang-phuc', 'trang-phuc_boi-loi', N'Bơi lội')

@@ -17,4 +17,5 @@ public interface BillService {
     List<BillDetail> cancelBillById(List<Integer> listBillId);
     List<BillDetail> findBillByConfirm(Boolean confirm);
     BillDetail saveBillFromCart(List<Cart> listCart);
+    Integer getRevenueByMonth(String month);
 }

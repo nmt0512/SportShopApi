@@ -28,7 +28,7 @@ public class OTPController {
     private UserService userService;
 
     @ApiOperation(value = "Tạo mã OTP")
-    @GetMapping("/generate-otp")
+    @PostMapping("/generate-otp")
     public ResponseEntity generateOTP(@ApiParam(value = "Email người dùng", required = true, defaultValue = "user@gmail.com")
                                       @RequestParam("email") String email) {
         try {

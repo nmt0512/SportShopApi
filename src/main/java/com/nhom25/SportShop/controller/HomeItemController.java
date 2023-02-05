@@ -32,11 +32,13 @@ public class HomeItemController {
 			@ApiParam(value = "Phân loại màu sắc", defaultValue = "white,red")
 			@RequestParam(value = "color", required = false) List<String> colorList,
 			@ApiParam(value = "Phân loại khoảng giá", defaultValue = "200000")
-			@RequestParam(value = "price", required = false) Integer price){
+			@RequestParam(value = "price", required = false) Integer price,
+			@ApiParam(value = "Phân loại size", defaultValue = "M,L")
+			@RequestParam(value = "size", required = false) List<String> sizeList){
 		if(categoryCodeList == null && colorList == null && price == null)
 			return itemService.findItemByGeneralCategory(code);
 		else
-			return itemService.filterItem(code, categoryCodeList, colorList, price);
+			return itemService.filterItem(code, categoryCodeList, colorList, sizeList, price);
 	}
 
 	@ApiOperation(value = "Tìm theo tên sản phẩm")
@@ -56,5 +58,12 @@ public class HomeItemController {
 	public List<ItemDto> getLatestItemInWeek()
 	{
 		return itemService.findLatestItemInWeek();
+	}
+
+	@ApiOperation(value = "Lấy sản phẩm theo code")
+	@GetMapping("/code")
+	public List<ItemDto> getItemByCode(@RequestParam("param") String code)
+	{
+		return itemService.findByCode(code);
 	}
 }

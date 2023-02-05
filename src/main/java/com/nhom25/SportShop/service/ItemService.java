@@ -15,6 +15,7 @@ public interface ItemService {
 	List<ItemDto> updateItem(List<ItemDto> itemDtoList);
 	void deleteItem(Integer itemId);
 	void subtractPaymentItem(List<Cart> listCart);
-	List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, Integer price);
+	List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, List<String> sizeList, Integer price);
 	List<ItemDto> findLatestItemInWeek();
+	List<ItemDto> findByCode(String code);
 }

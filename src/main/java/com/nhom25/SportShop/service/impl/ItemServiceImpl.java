@@ -106,7 +106,9 @@ public class ItemServiceImpl implements ItemService {
             newEntity.setCode(convertNameToCode(newEntity.getName()));
             newEntity.setCreatedDate(oldEntity.getCreatedDate());
             newEntity.setCategoryCode(oldEntity.getCategoryCode());
-            result.add(converter.toDto(itemRepo.save(newEntity)));
+            ItemDto itemDto = converter.toDto(itemRepo.save(newEntity));
+            itemDto.setImage(dto.getImage());
+            result.add(itemDto);
         }
         return result;
     }
@@ -127,21 +129,23 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, Integer price) {
+    public List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, List<String> sizeList, Integer price) {
         List<ItemDto> result = findItemByGeneralCategory(gcCode);
         List<ItemDto> removeList = new ArrayList<>();
         for (ItemDto item : result) {
             if (categoryCodeList != null && !categoryCodeList.contains(item.getCategoryCode()))
             {
                 removeList.add(item);
-                continue;
             }
-            if (colorList != null && !colorList.contains(item.getColor()))
+            else if (colorList != null && !colorList.contains(item.getColor()))
             {
                 removeList.add(item);
-                continue;
             }
-            if(price != null && item.getPrice() >= price)
+            else if(sizeList != null && !sizeList.contains(item.getSize()))
+            {
+                removeList.add(item);
+            }
+            else if(price != null && item.getPrice() >= price)
             {
                 removeList.add(item);
             }
@@ -154,6 +158,18 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> findLatestItemInWeek() {
         List<ItemDto> result = new ArrayList<>();
         for (Item e : itemRepo.findLatestItemInWeek()) {
+            ItemDto dto = converter.toDto(e);
+            List<Image> listImage = imageRepo.findByItemId(e.getId());
+            dto = setImageForDto(dto, listImage);
+            result.add(dto);
+        }
+        return result;
+    }
+
+    @Override
+    public List<ItemDto> findByCode(String code) {
+        List<ItemDto> result = new ArrayList<>();
+        for (Item e : itemRepo.findByCode(code)) {
             ItemDto dto = converter.toDto(e);
             List<Image> listImage = imageRepo.findByItemId(e.getId());
             dto = setImageForDto(dto, listImage);

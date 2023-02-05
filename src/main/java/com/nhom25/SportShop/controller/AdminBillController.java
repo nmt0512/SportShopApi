@@ -1,10 +1,13 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.BillDetail;
+import com.nhom25.SportShop.response.ResponseData;
+import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.BillService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,24 +47,33 @@ public class AdminBillController {
     }
 
     @ApiOperation(value = "Duyệt Bill")
-    @PutMapping("/confirm")
+    @PostMapping("/confirm")
     public List<BillDetail> confirmBill(@RequestBody List<Integer> listBillId)
     {
         return billService.confirmBillById(listBillId);
     }
 
     @ApiOperation(value = "Hủy duyệt Bill")
-    @PutMapping("/unconfirm")
+    @PostMapping("/unconfirm")
     public List<BillDetail> unconfirmBill(@RequestBody List<Integer> listBillId)
     {
         return billService.undoConfirmBillById(listBillId);
     }
 
     @ApiOperation(value = "Hủy Bill")
-    @PutMapping("/cancel")
+    @PostMapping("/cancel")
     public List<BillDetail> cancelBill(@RequestBody List<Integer> listBillId)
     {
         return billService.cancelBillById(listBillId);
+    }
+
+    @ApiOperation(value = "Xem doanh số theo tháng")
+    @GetMapping("/revenue")
+    public ResponseEntity getRevenueByMonth(@RequestParam("month") String month)
+    {
+        ResponseData<Integer> data = new ResponseData<>();
+        data.setData(billService.getRevenueByMonth(month));
+        return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 
 }

@@ -15,4 +15,5 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	Item findByCodeAndColorAndSize(@Param("code") String code, @Param("color") String color, @Param("size") String size);
 	@Query(value = "SELECT * FROM Item WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7", nativeQuery = true)
 	List<Item> findLatestItemInWeek();
+	List<Item> findByCode(String code);
 }

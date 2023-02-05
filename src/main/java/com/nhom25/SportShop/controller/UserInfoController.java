@@ -33,13 +33,13 @@ public class UserInfoController {
     }
 
     @ApiOperation(value = "Chỉnh sửa thông tin người dùng")
-    @PutMapping("/user/info")
+    @PostMapping("/user/info")
     public UserDto updateUserInfo(@RequestBody UserDto dto) {
         return userService.updateUser(dto);
     }
 
     @ApiOperation(value = "Đổi mật khẩu người dùng")
-    @PutMapping("/user/password")
+    @PostMapping("/user/password")
     public ResponseEntity updateUserPassword(@RequestBody ChangingPasswordDto changingPasswordDto)
     {
         UserDto userDto = userService.updateUserPassword(changingPasswordDto);
@@ -49,7 +49,7 @@ public class UserInfoController {
     }
 
     @ApiOperation(value = "Đăng ký")
-    @PostMapping("/user")
+    @PostMapping("/user/register")
     public ResponseEntity registerUser(@RequestBody UserDto userDto) {
         UserDto user = userService.addUser(userDto);
         ResponseData<UserDto> data = new ResponseData<>();

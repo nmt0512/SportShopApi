@@ -13,7 +13,8 @@ import java.util.List;
 public class ItemRequestDto {
     private String name;
     private String description;
-    private String categoryCode;
+    private String generalCategoryName;
+    private String categoryName;
     private List<String> images;
     @JsonProperty("itemDetails")
     private List<ItemDetailsDto> itemDetailsDtoList;

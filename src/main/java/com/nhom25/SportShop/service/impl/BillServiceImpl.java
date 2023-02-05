@@ -104,6 +104,12 @@ public class BillServiceImpl implements BillService {
         return new BillDetail(bill, listBillItem);
     }
 
+    @Override
+    public Integer getRevenueByMonth(String month) {
+        String[] dateStr = month.split("/");
+        return billRepo.findSumTotalPriceByMonth(dateStr[0], dateStr[1]);
+    }
+
     private List<BillDetail> getResult(List<Bill> listBill) {
         List<BillDetail> result = new ArrayList<>();
         BillDetail billDetail = new BillDetail();

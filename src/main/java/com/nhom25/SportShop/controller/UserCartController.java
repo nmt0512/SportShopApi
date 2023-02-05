@@ -27,14 +27,14 @@ public class UserCartController {
         return cartService.getAllItemInCart();
     }
 
-//    @ApiOperation(value = "Chỉnh sửa sản phẩm giỏ hàng")
-//    @PutMapping
-//    public Cart updateCartItem(@RequestBody Cart cart) {
-//        return cartService.updateCartItem(cart);
-//    }
+    @ApiOperation(value = "Chỉnh sửa sản phẩm giỏ hàng")
+    @PostMapping("/update")
+    public Cart updateCartItem(@RequestBody CartDto cartDto) {
+        return cartService.updateCart(cartDto);
+    }
 
     @ApiOperation(value = "Xóa sản phẩm trong giỏ hàng")
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity deleteCartItem(@PathVariable("id") Integer cartId) {
         cartService.deleteCartItem(cartId);
         return ResponseUtils.success();
@@ -48,7 +48,7 @@ public class UserCartController {
     }
 
     @ApiOperation(value = "Thanh toán sản phẩm trong giỏ hàng")
-    @PutMapping("/payment")
+    @PostMapping("/payment")
     public BillDetail paymentCart(@RequestBody PaymentCartDto paymentCartDto) {
         //test
         return cartService.paymentCart(paymentCartDto);

@@ -20,7 +20,7 @@ public class GuestCartController {
     private GuestCartService service;
 
     @ApiOperation(value = "Thêm sản phẩm vào giỏ hàng khách vãng lai")
-    @PostMapping
+    @PostMapping("/add")
     public GuestCart addGuestCart(@RequestBody ItemDto itemDto, @RequestParam(name = "quantity") Short quantity)
     {
         return service.addGuestCart(itemDto, quantity);
@@ -34,7 +34,7 @@ public class GuestCartController {
     }
 
     @ApiOperation(value = "Xóa sản phẩm trong giỏ hàng khách vãng lai")
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity deleteGuestCart(@RequestParam(name = "param") Integer id)
     {
         if(service.deleteGuestCartById(id))

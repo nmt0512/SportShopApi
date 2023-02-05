@@ -35,6 +35,8 @@ public class ItemConverter {
 	public List<Item> toEntityList(ItemRequestDto itemRequestDto)
 	{
 		List<Item> result = new ArrayList<>();
+		String categoryCode = convertNameToCode(itemRequestDto.getGeneralCategoryName()) + "_"
+				+ convertNameToCode(itemRequestDto.getCategoryName());
 		for(ItemDetailsDto detailsDto: itemRequestDto.getItemDetailsDtoList())
 		{
 			Item entity = mapper.map(itemRequestDto, Item.class);
@@ -43,6 +45,7 @@ public class ItemConverter {
 			entity.setSize(detailsDto.getSize());
 			entity.setColor(detailsDto.getColor());
 			entity.setQuantity(detailsDto.getQuantity());
+			entity.setCategoryCode(categoryCode);
 			result.add(entity);
 		}
 		return result;
