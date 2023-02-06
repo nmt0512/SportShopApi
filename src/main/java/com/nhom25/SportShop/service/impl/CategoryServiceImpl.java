@@ -20,16 +20,6 @@ public class CategoryServiceImpl implements CategoryService {
     private GeneralCategoryRepository generalCategoryRepo;
 
     @Override
-    public Category findCategoryByCode(String code) {
-        return categoryRepo.findByCode(code);
-    }
-
-    @Override
-    public List<Category> findByGeneralCode(String gcCode) {
-        return categoryRepo.findByGeneralCode(gcCode);
-    }
-
-    @Override
     public CategoryResponse getCategoryAndGeneralCategoryNames() {
         List<String> generalCategoryNameList = new ArrayList<>();
         List<String> categoryNameList = new ArrayList<>();

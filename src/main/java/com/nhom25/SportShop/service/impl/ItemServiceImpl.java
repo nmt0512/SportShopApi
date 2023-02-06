@@ -7,9 +7,9 @@ import com.nhom25.SportShop.entity.Cart;
 import com.nhom25.SportShop.entity.Category;
 import com.nhom25.SportShop.entity.Image;
 import com.nhom25.SportShop.entity.Item;
+import com.nhom25.SportShop.repository.CategoryRepository;
 import com.nhom25.SportShop.repository.ImageRepository;
 import com.nhom25.SportShop.repository.ItemRepository;
-import com.nhom25.SportShop.service.CategoryService;
 import com.nhom25.SportShop.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,46 +24,33 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemRepository itemRepo;
     @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private ItemConverter converter;
+    private CategoryRepository categoryRepo;
     @Autowired
     private ImageRepository imageRepo;
+    @Autowired
+    private ItemConverter converter;
 
     @Override
     public List<ItemDto> findAllItem() {
-        List<ItemDto> result = new ArrayList<>();
-        for (Item e : itemRepo.findAll()) {
-            ItemDto dto = converter.toDto(e);
-            List<Image> listImage = imageRepo.findByItemId(e.getId());
-            dto = setImageForDto(dto, listImage);
-            result.add(dto);
-        }
+        List<Item> entityList = itemRepo.findAll();
+        List<ItemDto> result = converter.toDtoList(entityList);
         return result;
     }
 
     @Override
     public List<ItemDto> searchByName(String name) {
-        List<ItemDto> result = new ArrayList<>();
-        for (Item e : itemRepo.findByNameContaining(name)) {
-            ItemDto dto = converter.toDto(e);
-            List<Image> listImage = imageRepo.findByItemId(e.getId());
-            dto = setImageForDto(dto, listImage);
-            result.add(dto);
-        }
+        List<Item> entityList = itemRepo.findByNameContaining(name);
+        List<ItemDto> result = converter.toDtoList(entityList);
         return result;
     }
 
     @Override
     public List<ItemDto> findItemByGeneralCategory(String gcCode) {
         List<ItemDto> result = new ArrayList<>();
-        for (Category cate : categoryService.findByGeneralCode(gcCode)) {
-            for (Item e : itemRepo.findByCategoryCode(cate.getCode())) {
-                ItemDto dto = converter.toDto(e);
-                List<Image> listImage = imageRepo.findByItemId(e.getId());
-                dto = setImageForDto(dto, listImage);
-                result.add(dto);
-            }
+        for (Category cate : categoryRepo.findByGeneralCode(gcCode)) {
+            List<Item> entityList = itemRepo.findByCategoryCode(cate.getCode());
+            List<ItemDto> dtoList = converter.toDtoList(entityList);
+            result.addAll(dtoList);
         }
         return result;
     }
@@ -71,8 +58,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto findById(Integer itemId) {
         ItemDto dto = converter.toDto(itemRepo.getById(itemId));
-        List<Image> listImage = imageRepo.findByItemId(itemId);
-        dto = setImageForDto(dto, listImage);
         return dto;
     }
 
@@ -90,7 +75,6 @@ public class ItemServiceImpl implements ItemService {
                 imageRepo.save(image);
             }
             ItemDto itemDto = converter.toDto(entity);
-            itemDto.setImage(itemRequestDto.getImages());
             result.add(itemDto);
         }
         return result;
@@ -107,7 +91,6 @@ public class ItemServiceImpl implements ItemService {
             newEntity.setCreatedDate(oldEntity.getCreatedDate());
             newEntity.setCategoryCode(oldEntity.getCategoryCode());
             ItemDto itemDto = converter.toDto(itemRepo.save(newEntity));
-            itemDto.setImage(dto.getImage());
             result.add(itemDto);
         }
         return result;
@@ -156,35 +139,30 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> findLatestItemInWeek() {
-        List<ItemDto> result = new ArrayList<>();
-        for (Item e : itemRepo.findLatestItemInWeek()) {
-            ItemDto dto = converter.toDto(e);
-            List<Image> listImage = imageRepo.findByItemId(e.getId());
-            dto = setImageForDto(dto, listImage);
-            result.add(dto);
-        }
+        List<Item> entityList = itemRepo.findLatestItemInWeek();
+        List<ItemDto> result = converter.toDtoList(entityList);
         return result;
     }
 
     @Override
     public List<ItemDto> findByCode(String code) {
-        List<ItemDto> result = new ArrayList<>();
-        for (Item e : itemRepo.findByCode(code)) {
-            ItemDto dto = converter.toDto(e);
-            List<Image> listImage = imageRepo.findByItemId(e.getId());
-            dto = setImageForDto(dto, listImage);
-            result.add(dto);
-        }
+        List<Item> entityList = itemRepo.findByCode(code);
+        List<ItemDto> result = converter.toDtoList(entityList);
         return result;
     }
 
-    private ItemDto setImageForDto(ItemDto dto, List<Image> listImage) {
-        List<String> listLink = new ArrayList<>();
-        for (Image image : listImage) {
-            listLink.add(image.getLink());
-        }
-        dto.setImage(listLink);
-        return dto;
+    @Override
+    public List<ItemDto> getMostPopularItem() {
+        List<Item> entityList = itemRepo.getMostRevenueItem();
+        List<ItemDto> result = converter.toDtoList(entityList);
+        return result;
+    }
+
+    @Override
+    public List<ItemDto> getBestSellerItemInWeek() {
+        List<Item> entityList = itemRepo.getBestSellerItem();
+        List<ItemDto> result = converter.toDtoList(entityList);
+        return result;
     }
 
     private String convertNameToCode(String name) {

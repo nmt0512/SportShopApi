@@ -18,4 +18,6 @@ public interface ItemService {
 	List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, List<String> sizeList, Integer price);
 	List<ItemDto> findLatestItemInWeek();
 	List<ItemDto> findByCode(String code);
+	List<ItemDto> getMostPopularItem();
+	List<ItemDto> getBestSellerItemInWeek();
 }

@@ -1,23 +1,22 @@
 package com.nhom25.SportShop.service.impl;
 
 import com.nhom25.SportShop.dto.BillDetail;
+import com.nhom25.SportShop.dto.RevenueDto;
 import com.nhom25.SportShop.entity.Bill;
 import com.nhom25.SportShop.entity.BillItem;
 import com.nhom25.SportShop.entity.Cart;
 import com.nhom25.SportShop.repository.BillItemRepository;
 import com.nhom25.SportShop.repository.BillRepository;
+import com.nhom25.SportShop.repository.RevenueRepository;
 import com.nhom25.SportShop.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-//import java.text.DateFormat;
-//import java.text.SimpleDateFormat;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-//import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,6 +25,8 @@ public class BillServiceImpl implements BillService {
     private BillRepository billRepo;
     @Autowired
     private BillItemRepository billItemRepo;
+    @Autowired
+    private RevenueRepository revenueRepo;
 
     @Override
     public List<BillDetail> findAllBill() {
@@ -48,9 +49,8 @@ public class BillServiceImpl implements BillService {
             List<Bill> listBill = billRepo.findByDay(parseDate(day));
             return getResult(listBill);
         } catch (ParseException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -79,7 +79,6 @@ public class BillServiceImpl implements BillService {
     public BillDetail saveBillFromCart(List<Cart> listCart) {
         //Create new Bill
         Bill bill = new Bill();
-//        bill.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         bill.setUsername(listCart.get(0).getUsername());
         bill.setConfirm(false);
         bill.setStatus(true);
@@ -110,10 +109,15 @@ public class BillServiceImpl implements BillService {
         return billRepo.findSumTotalPriceByMonth(dateStr[0], dateStr[1]);
     }
 
-    private List<BillDetail> getResult(List<Bill> listBill) {
+    @Override
+    public List<RevenueDto> getAllMonthTotalRevenue() {
+        return revenueRepo.getAllMonthTotalRevenue();
+    }
+
+    private List<BillDetail> getResult(List<Bill> billList) {
         List<BillDetail> result = new ArrayList<>();
-        BillDetail billDetail = new BillDetail();
-        for (Bill bill : listBill) {
+        for (Bill bill : billList) {
+            BillDetail billDetail = new BillDetail();
             billDetail.setBill(bill);
             billDetail.setListBillItem(billItemRepo.findByBillId(bill.getId()));
             result.add(billDetail);

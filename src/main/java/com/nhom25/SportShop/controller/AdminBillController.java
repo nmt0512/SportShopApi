@@ -1,6 +1,7 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.BillDetail;
+import com.nhom25.SportShop.dto.RevenueDto;
 import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.BillService;
@@ -73,6 +74,15 @@ public class AdminBillController {
     {
         ResponseData<Integer> data = new ResponseData<>();
         data.setData(billService.getRevenueByMonth(month));
+        return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
+    }
+
+    @ApiOperation(value = "Xem doanh số tất cả các tháng")
+    @GetMapping("/revenue/all")
+    public ResponseEntity getAllMonthTotalRevenue()
+    {
+        ResponseData<List<RevenueDto>> data = new ResponseData<>();
+        data.setData(billService.getAllMonthTotalRevenue());
         return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 

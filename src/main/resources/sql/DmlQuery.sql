@@ -63,3 +63,13 @@ VALUES('qua-bong-da-uefa-champions-league-2022', N'Quả bóng đá UEFA Champio
 SELECT * FROM Item WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7
 
 INSERT INTO Category(GeneralCode, Code, Name) VALUES('trang-phuc', 'trang-phuc_boi-loi', N'Bơi lội')
+
+SELECT SUM(TotalPrice) TotalPriceOfMonth FROM Bill WHERE YEAR(Time) = 2023 AND MONTH(Time) = 2
+
+SELECT FORMAT(Time, 'MM/yyyy') MonthTime, SUM(TotalPrice) TotalRevenue FROM Bill GROUP BY FORMAT(Time, 'MM/yyyy')
+
+SELECT DISTINCT MONTH(Time), YEAR(Time) FROM Bill
+
+SELECT * FROM Item WHERE ItemId IN
+(SELECT TOP 4 ItemId FROM BillItem WHERE BillId IN (SELECT BillId FROM Bill WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7) 
+GROUP BY ItemId ORDER BY COUNT(ItemId) DESC)

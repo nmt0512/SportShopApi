@@ -1,6 +1,7 @@
 package com.nhom25.SportShop.service;
 
 import com.nhom25.SportShop.dto.BillDetail;
+import com.nhom25.SportShop.dto.RevenueDto;
 import com.nhom25.SportShop.entity.Bill;
 import com.nhom25.SportShop.entity.Cart;
 
@@ -18,4 +19,5 @@ public interface BillService {
     List<BillDetail> findBillByConfirm(Boolean confirm);
     BillDetail saveBillFromCart(List<Cart> listCart);
     Integer getRevenueByMonth(String month);
+    List<RevenueDto> getAllMonthTotalRevenue();
 }

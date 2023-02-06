@@ -3,8 +3,9 @@ package com.nhom25.SportShop.converter;
 import com.nhom25.SportShop.dto.ItemDetailsDto;
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.ItemRequestDto;
+import com.nhom25.SportShop.entity.Image;
 import com.nhom25.SportShop.entity.Item;
-import com.nhom25.SportShop.repository.ItemRepository;
+import com.nhom25.SportShop.repository.ImageRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,10 +21,16 @@ public class ItemConverter {
 	@Autowired
 	private ModelMapper mapper;
 	@Autowired
-	private ItemRepository itemRepository;
+	private ImageRepository imageRepo;
 
 	public ItemDto toDto(Item entity) {
 		ItemDto dto = mapper.map(entity, ItemDto.class);
+		List<String> imgLinkList = new ArrayList<>();
+		for(Image image: imageRepo.findByItemId(entity.getId()))
+		{
+			imgLinkList.add(image.getLink());
+		}
+		dto.setImage(imgLinkList);
 		return dto;
 	}
 
@@ -47,6 +54,17 @@ public class ItemConverter {
 			entity.setQuantity(detailsDto.getQuantity());
 			entity.setCategoryCode(categoryCode);
 			result.add(entity);
+		}
+		return result;
+	}
+
+	public List<ItemDto> toDtoList(List<Item> entityList)
+	{
+		List<ItemDto> result = new ArrayList<>();
+		for(Item e: entityList)
+		{
+			ItemDto dto = toDto(e);
+			result.add(dto);
 		}
 		return result;
 	}

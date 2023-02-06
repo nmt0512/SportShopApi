@@ -1,10 +1,13 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.ItemDto;
+import com.nhom25.SportShop.response.ResponseData;
+import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.ItemService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,4 +69,23 @@ public class HomeItemController {
 	{
 		return itemService.findByCode(code);
 	}
+
+	@ApiOperation(value = "Danh sách sản phẩm phổ biến (4 sản phẩm bán chạy nhất tất cả các thời điểm)")
+	@GetMapping("/popular")
+	public ResponseEntity getMostPopularItem()
+	{
+		ResponseData<List<ItemDto>> data = new ResponseData<>();
+		data.setData(itemService.getMostPopularItem());
+		return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
+	}
+
+	@ApiOperation(value = "Danh sách sản phẩm bán chạy (4 sản phẩm bán chạy nhất trong tuần)")
+	@GetMapping("/bestseller")
+	public ResponseEntity getBestSellerItemInWeek()
+	{
+		ResponseData<List<ItemDto>> data = new ResponseData<>();
+		data.setData(itemService.getBestSellerItemInWeek());
+		return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
+	}
+
 }

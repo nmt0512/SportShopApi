@@ -16,4 +16,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	@Query(value = "SELECT * FROM Item WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7", nativeQuery = true)
 	List<Item> findLatestItemInWeek();
 	List<Item> findByCode(String code);
+	@Query(value = "SELECT * FROM Item WHERE ItemId IN " +
+			"(SELECT TOP 4 ItemId FROM BillItem GROUP BY ItemId ORDER BY COUNT(ItemId) DESC)", nativeQuery = true)
+	List<Item> getMostRevenueItem();
+	@Query(value = "SELECT * FROM Item WHERE ItemId IN " +
+			"(SELECT TOP 4 ItemId FROM BillItem WHERE BillId IN (SELECT BillId FROM Bill WHERE DATEDIFF(DAY, CreatedDate, GETDATE()) <= 7) " +
+			"GROUP BY ItemId ORDER BY COUNT(ItemId) DESC)", nativeQuery = true)
+	List<Item> getBestSellerItem();
 }

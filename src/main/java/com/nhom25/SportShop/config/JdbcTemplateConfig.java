@@ -1,0 +1,30 @@
+package com.nhom25.SportShop.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+@Configuration
+public class JdbcTemplateConfig {
+    @Autowired
+    private Environment environment;
+
+    private DriverManagerDataSource getDriverManagerDataSource()
+    {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName(environment.getProperty("spring.datasource.driverClassName"));
+        ds.setUrl(environment.getProperty("spring.datasource.url"));
+        ds.setUsername(environment.getProperty("spring.datasource.username"));
+        ds.setPassword(environment.getProperty("spring.datasource.password"));
+        return ds;
+    }
+
+    @Bean
+    public JdbcTemplate getJdbcTemplate(){
+        return new JdbcTemplate(getDriverManagerDataSource());
+    }
+
+}
