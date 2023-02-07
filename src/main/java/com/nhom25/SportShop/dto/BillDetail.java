@@ -1,5 +1,6 @@
 package com.nhom25.SportShop.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nhom25.SportShop.entity.Bill;
 import com.nhom25.SportShop.entity.BillItem;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BillDetail {
-    private Bill bill;
-    private List<BillItem> listBillItem = new ArrayList<>();
+    @JsonProperty("bill")
+    private BillDto billDto;
+    @JsonProperty("billItems")
+    private List<BillItemDto> billItemDtoList;
 }

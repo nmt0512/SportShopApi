@@ -7,7 +7,6 @@ import com.nhom25.SportShop.repository.GuestCartRepository;
 import com.nhom25.SportShop.repository.ItemRepository;
 import com.nhom25.SportShop.service.GuestCartService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,7 +62,6 @@ public class GuestCartServiceImpl implements GuestCartService {
         return guestCartRepo.deleteById(id);
     }
 
-//    @Scheduled(cron = "0 0 * * * *")
     @Override
     public void deleteAll() {
         guestCartRepo.deleteAll();

@@ -1,5 +1,6 @@
 package com.nhom25.SportShop.service.impl;
 
+import com.nhom25.SportShop.converter.BillConverter;
 import com.nhom25.SportShop.dto.BillDetail;
 import com.nhom25.SportShop.dto.RevenueDto;
 import com.nhom25.SportShop.entity.Bill;
@@ -27,6 +28,8 @@ public class BillServiceImpl implements BillService {
     private BillItemRepository billItemRepo;
     @Autowired
     private RevenueRepository revenueRepo;
+    @Autowired
+    private BillConverter converter;
 
     @Override
     public List<BillDetail> findAllBill() {
@@ -91,16 +94,16 @@ public class BillServiceImpl implements BillService {
         bill = billRepo.save(bill);
 
         //Create listBillItem for created Bill
-        List<BillItem> listBillItem = new ArrayList<>();
+        List<BillItem> billItemList = new ArrayList<>();
         BillItem billItem = new BillItem();
         billItem.setBillId(bill.getId());
         for (Cart cart : listCart) {
             billItem.setItemId(cart.getItemId());
             billItem.setQuantity(cart.getQuantity());
             billItem.setPrice(cart.getPrice());
-            listBillItem.add(billItemRepo.save(billItem));
+            billItemList.add(billItemRepo.save(billItem));
         }
-        return new BillDetail(bill, listBillItem);
+        return converter.toBillDetail(bill, billItemList);
     }
 
     @Override
@@ -117,10 +120,8 @@ public class BillServiceImpl implements BillService {
     private List<BillDetail> getResult(List<Bill> billList) {
         List<BillDetail> result = new ArrayList<>();
         for (Bill bill : billList) {
-            BillDetail billDetail = new BillDetail();
-            billDetail.setBill(bill);
-            billDetail.setListBillItem(billItemRepo.findByBillId(bill.getId()));
-            result.add(billDetail);
+            List<BillItem> billItemList = billItemRepo.findByBillId(bill.getId());
+            result.add(converter.toBillDetail(bill, billItemList));
         }
         return result;
     }

@@ -49,23 +49,23 @@ public class AdminBillController {
 
     @ApiOperation(value = "Duyệt Bill")
     @PostMapping("/confirm")
-    public List<BillDetail> confirmBill(@RequestBody List<Integer> listBillId)
+    public List<BillDetail> confirmBill(@RequestParam("id") List<Integer> billIdList)
     {
-        return billService.confirmBillById(listBillId);
+        return billService.confirmBillById(billIdList);
     }
 
     @ApiOperation(value = "Hủy duyệt Bill")
     @PostMapping("/unconfirm")
-    public List<BillDetail> unconfirmBill(@RequestBody List<Integer> listBillId)
+    public List<BillDetail> unconfirmBill(@RequestParam("id") List<Integer> billIdList)
     {
-        return billService.undoConfirmBillById(listBillId);
+        return billService.undoConfirmBillById(billIdList);
     }
 
     @ApiOperation(value = "Hủy Bill")
     @PostMapping("/cancel")
-    public List<BillDetail> cancelBill(@RequestBody List<Integer> listBillId)
+    public List<BillDetail> cancelBill(@RequestParam("id") List<Integer> billIdList)
     {
-        return billService.cancelBillById(listBillId);
+        return billService.cancelBillById(billIdList);
     }
 
     @ApiOperation(value = "Xem doanh số theo tháng")
