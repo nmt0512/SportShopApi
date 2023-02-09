@@ -34,10 +34,17 @@ public class AdminItemController {
         return itemService.updateItem(itemDtoList);
     }
 
-    @ApiOperation(value = "Xóa sản phẩm")
+    @ApiOperation(value = "Xóa sản phẩm theo ID")
     @PostMapping("/delete")
-    public ResponseEntity deleteItem(@RequestParam("param") Integer itemId) {
-        itemService.deleteItem(itemId);
+    public ResponseEntity deleteItemById(@RequestParam("param") Integer itemId) {
+        itemService.deleteItemById(itemId);
+        return ResponseUtils.success();
+    }
+
+    @ApiOperation(value = "Xóa sản phẩm theo Code")
+    @PostMapping("/delete/{code}")
+    public ResponseEntity deleteItemByCode(@PathVariable(value = "code") String code) {
+        itemService.deleteItemByCode(code);
         return ResponseUtils.success();
     }
 

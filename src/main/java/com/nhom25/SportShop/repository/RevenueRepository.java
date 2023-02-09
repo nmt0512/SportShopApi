@@ -16,7 +16,7 @@ public class RevenueRepository {
     public List<RevenueDto> getAllMonthTotalRevenue()
     {
         String query = "SELECT FORMAT(Time, 'MM/yyyy') MonthTime, SUM(TotalPrice) TotalRevenue " +
-                "FROM Bill GROUP BY FORMAT(Time, 'MM/yyyy')";
+                "FROM Bill WHERE Status = 1 GROUP BY FORMAT(Time, 'MM/yyyy')";
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(RevenueDto.class));
     }
 }

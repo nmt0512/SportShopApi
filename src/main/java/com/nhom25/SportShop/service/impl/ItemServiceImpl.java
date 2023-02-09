@@ -97,9 +97,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItem(Integer itemId) {
-        imageRepo.deleteByItemId(itemId);
+    public void deleteItemById(Integer itemId) {
+        imageRepo.deleteInBulkByItemId(itemId);
         itemRepo.deleteById(itemId);
+    }
+
+    @Override
+    public void deleteItemByCode(String code) {
+        imageRepo.deleteInBulkByItemCode(code);
+        itemRepo.deleteInBulkByCode(code);
     }
 
     @Override

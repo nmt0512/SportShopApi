@@ -25,5 +25,7 @@ public class Bill {
 	private Boolean confirm;
 	@Column(name = "Status", nullable = false)
 	private Boolean status;
+	@Column(name = "Delivered")
+	private Boolean delivered;
 
 }

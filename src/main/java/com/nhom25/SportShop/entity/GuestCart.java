@@ -14,12 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RedisHash("GuestCart")
 public class GuestCart implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private Item itemEntity;
-    private Short quantity;
-    private Integer price;
+    private String sessionId;
+    private String itemDetail;
 }

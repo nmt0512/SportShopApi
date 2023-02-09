@@ -5,7 +5,9 @@ import com.nhom25.SportShop.dto.CartDto;
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
+import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.response.ResponseUtils;
+import com.nhom25.SportShop.service.BillService;
 import com.nhom25.SportShop.service.CartService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.List;
 public class UserCartController {
     @Autowired
     private CartService cartService;
+    @Autowired
+    private BillService billService;
 
     @ApiOperation(value = "Lấy tất cả sản phẩm trong giỏ hàng")
     @GetMapping
@@ -50,7 +54,15 @@ public class UserCartController {
     @ApiOperation(value = "Thanh toán sản phẩm trong giỏ hàng")
     @PostMapping("/payment")
     public BillDetail paymentCart(@RequestBody PaymentCartDto paymentCartDto) {
-        //test
         return cartService.paymentCart(paymentCartDto);
+    }
+
+    @ApiOperation(value = "Lấy thông tin các bill của người dùng")
+    @GetMapping("/bill")
+    public ResponseEntity getAllUserBill()
+    {
+        ResponseData<List<BillDetail>> data = new ResponseData<>();
+        data.setData(billService.findByCurrentUsername());
+        return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 }

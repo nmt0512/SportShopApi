@@ -2,44 +2,45 @@ package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.entity.GuestCart;
+import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.GuestCartService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/guest/cart")
 public class GuestCartController {
     @Autowired
-    private GuestCartService service;
+    private GuestCartService guestCartService;
 
-    @ApiOperation(value = "Thêm sản phẩm vào giỏ hàng khách vãng lai")
+    @ApiOperation(value = "Thêm sản phẩm vào giỏ hàng của khách vãng lai")
     @PostMapping("/add")
-    public GuestCart addGuestCart(@RequestBody ItemDto itemDto, @RequestParam(name = "quantity") Short quantity)
+    public ResponseEntity addToGuestCart(@RequestBody ItemDto itemDto, HttpServletRequest request)
     {
-        return service.addGuestCart(itemDto, quantity);
+        ResponseData<List<GuestCart>> data = guestCartService.save(itemDto, request.getSession());
+        return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 
-    @ApiOperation(value = "Lấy tất cả sản phẩm trong giỏ hàng khách vãng lai")
+    @ApiOperation(value = "Lấy thông tin tất cả sản phẩm trong giỏ hàng khách vãng lai")
     @GetMapping
-    public List<GuestCart> getAllGuestCart()
+    public ResponseEntity getAllGuestCart(HttpServletRequest request)
     {
-        return service.getAllGuestCart();
+        ResponseData<List<GuestCart>> data = guestCartService.findAll(request.getSession());
+        return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 
-    @ApiOperation(value = "Xóa sản phẩm trong giỏ hàng khách vãng lai")
+    @ApiOperation(value = "Xóa các sản phẩm trong giỏ hàng khách vãng lai")
     @PostMapping("/delete")
-    public ResponseEntity deleteGuestCart(@RequestParam(name = "param") Integer id)
+    public ResponseEntity deleteGuestCart(HttpServletRequest request)
     {
-        if(service.deleteGuestCartById(id))
-            return ResponseUtils.success();
-        else
-            return ResponseUtils.error(500, "Delete failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        guestCartService.deleteAll(request.getSession());
+        return ResponseUtils.success();
     }
+
 }

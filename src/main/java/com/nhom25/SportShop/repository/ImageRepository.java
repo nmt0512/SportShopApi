@@ -15,5 +15,10 @@ public interface ImageRepository extends JpaRepository<Image, Integer> {
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM Image WHERE ItemId = :itemId", nativeQuery = true)
-    void deleteByItemId(@Param("itemId") Integer itemId);
+    void deleteInBulkByItemId(@Param("itemId") Integer itemId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM Image WHERE ItemId IN (SELECT ItemId FROM Item WHERE Code = :itemCode)", nativeQuery = true)
+    void deleteInBulkByItemCode(@Param("itemCode") String itemCode);
 }

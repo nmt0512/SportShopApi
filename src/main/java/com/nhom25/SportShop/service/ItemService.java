@@ -13,7 +13,8 @@ public interface ItemService {
 	ItemDto findById(Integer itemId);
 	List<ItemDto> addItem(ItemRequestDto itemRequestDto);
 	List<ItemDto> updateItem(List<ItemDto> itemDtoList);
-	void deleteItem(Integer itemId);
+	void deleteItemById(Integer itemId);
+	void deleteItemByCode(String code);
 	void subtractPaymentItem(List<Cart> listCart);
 	List<ItemDto> filterItem(String gcCode, List<String> categoryCodeList, List<String> colorList, List<String> sizeList, Integer price);
 	List<ItemDto> findLatestItemInWeek();

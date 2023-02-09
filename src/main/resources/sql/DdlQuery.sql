@@ -65,6 +65,7 @@ TotalPrice int NULL CHECK(TotalPrice >= 1000),
 Time datetime NOT NULL,
 Confirm bit NOT NULL,
 Status bit NOT NULL,
+Delivered bit NULL,
 CONSTRAINT FK_Bill_Username FOREIGN KEY (Username) 
 	REFERENCES DBUser(Username)
 )
@@ -127,9 +128,12 @@ ALTER TABLE Cart
 ADD CONSTRAINT FK_Cart_Username FOREIGN KEY (Username) REFERENCES DBUser(Username)
 
 ALTER TABLE Bill
-ADD Status bit NOT NULL
+ADD Delivered bit
 
 ALTER TABLE DBUser
 ADD Avatar varchar(255)
 
 DROP TABLE Cart
+
+ALTER TABLE Bill
+ALTER COLUMN Delivered bit NULL

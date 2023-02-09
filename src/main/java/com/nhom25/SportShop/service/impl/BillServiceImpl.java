@@ -9,6 +9,7 @@ import com.nhom25.SportShop.entity.Cart;
 import com.nhom25.SportShop.repository.BillItemRepository;
 import com.nhom25.SportShop.repository.BillRepository;
 import com.nhom25.SportShop.repository.RevenueRepository;
+import com.nhom25.SportShop.security.UserDetailsServiceImpl;
 import com.nhom25.SportShop.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class BillServiceImpl implements BillService {
     private RevenueRepository revenueRepo;
     @Autowired
     private BillConverter converter;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
     public List<BillDetail> findAllBill() {
@@ -58,24 +61,23 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillDetail> findBillByMonth(String date) {
-        String[] dateStr = date.split("/");
-        List<Bill> listBill = billRepo.findByMonth(dateStr[0], dateStr[1]);
+        List<Bill> listBill = billRepo.findByMonth(date);
         return getResult(listBill);
     }
 
     @Override
-    public List<BillDetail> confirmBillById(List<Integer> listBillId) {
-        return handleBillById(listBillId, true, true);
+    public List<BillDetail> confirmBillById(List<Integer> billIdList) {
+        return handleBillById(billIdList, true, true);
     }
 
     @Override
-    public List<BillDetail> undoConfirmBillById(List<Integer> listBillId) {
-        return handleBillById(listBillId, true, false);
+    public List<BillDetail> undoConfirmBillById(List<Integer> billIdList) {
+        return handleBillById(billIdList, true, false);
     }
 
     @Override
-    public List<BillDetail> cancelBillById(List<Integer> listBillId) {
-        return handleBillById(listBillId, false, false);
+    public List<BillDetail> cancelBillById(List<Integer> billIdList) {
+        return handleBillById(billIdList, false, false);
     }
 
     @Override
@@ -85,6 +87,7 @@ public class BillServiceImpl implements BillService {
         bill.setUsername(listCart.get(0).getUsername());
         bill.setConfirm(false);
         bill.setStatus(true);
+        bill.setDelivered(null);
         bill.setTime(new Timestamp(System.currentTimeMillis()));
         Integer totalPrice = 0;
         for (Cart cart : listCart) {
@@ -108,14 +111,30 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Integer getRevenueByMonth(String month) {
-        String[] dateStr = month.split("/");
-        return billRepo.findSumTotalPriceByMonth(dateStr[0], dateStr[1]);
+        return billRepo.findSumTotalPriceByMonth(month);
     }
 
     @Override
     public List<RevenueDto> getAllMonthTotalRevenue() {
         return revenueRepo.getAllMonthTotalRevenue();
     }
+
+    @Override
+    public List<BillDetail> findByCurrentUsername() {
+        String username = userDetailsService.getCurrentUsername();
+        return getResult(billRepo.findByUsername(username));
+    }
+
+    @Override
+    public List<BillDetail> setDeliveredBillById(List<Integer> billIdList) {
+        return handleBillById(billIdList, null, true);
+    }
+
+    @Override
+    public List<BillDetail> undoDeliveredBillById(List<Integer> billIdList) {
+        return handleBillById(billIdList, null, false);
+    }
+
 
     private List<BillDetail> getResult(List<Bill> billList) {
         List<BillDetail> result = new ArrayList<>();
@@ -126,14 +145,28 @@ public class BillServiceImpl implements BillService {
         return result;
     }
 
-    private List<BillDetail> handleBillById(List<Integer> listBillId, Boolean isConfirmBill, Boolean attribute) {
+    private List<BillDetail> handleBillById(List<Integer> billIdList, Boolean isConfirmBill, Boolean attribute) {
+        // true: confirm
+        // false: status
+        // null: delivered
         List<Bill> listBill = new ArrayList<>();
-        for (Integer id : listBillId) {
+        for (Integer id : billIdList) {
             Bill bill = billRepo.getById(id);
-            if (isConfirmBill)
-                bill.setConfirm(attribute);
+            if(isConfirmBill != null)
+            {
+                if (isConfirmBill)
+                {
+                    bill.setConfirm(attribute);
+                    if(attribute)
+                        bill.setDelivered(false);
+                    else
+                        bill.setDelivered(null);
+                }
+                else
+                    bill.setStatus(attribute);
+            }
             else
-                bill.setStatus(attribute);
+                bill.setDelivered(attribute);
             listBill.add(billRepo.save(bill));
         }
         return getResult(listBill);
@@ -142,7 +175,7 @@ public class BillServiceImpl implements BillService {
     private String parseDate(String date) throws ParseException {
         java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDay = dateFormat.format(sqlDate);
         return formattedDay;
     }

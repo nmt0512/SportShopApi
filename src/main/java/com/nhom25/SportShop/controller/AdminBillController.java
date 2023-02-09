@@ -61,6 +61,20 @@ public class AdminBillController {
         return billService.undoConfirmBillById(billIdList);
     }
 
+    @ApiOperation(value = "Xác nhận đã giao hàng")
+    @PostMapping("/delivered")
+    public List<BillDetail> setDeliveredBill(@RequestParam("id") List<Integer> billIdList)
+    {
+        return billService.setDeliveredBillById(billIdList);
+    }
+
+    @ApiOperation(value = "Undo xác nhận đã giao hàng")
+    @PostMapping("/undo-delivered")
+    public List<BillDetail> undoDeliveredBill(@RequestParam("id") List<Integer> billIdList)
+    {
+        return billService.undoDeliveredBillById(billIdList);
+    }
+
     @ApiOperation(value = "Hủy Bill")
     @PostMapping("/cancel")
     public List<BillDetail> cancelBill(@RequestParam("id") List<Integer> billIdList)

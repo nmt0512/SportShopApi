@@ -41,24 +41,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     username = jwtUtil.getUsernameFromToken(jwtToken);
                 } catch (IllegalArgumentException | MalformedJwtException e) {
                     String url = request.getRequestURL().toString();
-                    if(!request.getRequestURL().toString().contains("/home"))
-                    {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                        response.getOutputStream().println("jwt_wrong");
-                    }
-                    else
-                    {
-                        response.setStatus(HttpServletResponse.SC_OK);
+                    if (!request.getRequestURL().toString().contains("/home")) {
+                        response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                        response.getOutputStream().print("JWT wrong");
                     }
                 } catch (ExpiredJwtException e) {
-                    if(request.getRequestURL().toString().contains("refresh-token"))
-                    {
+                    if (request.getRequestURL().toString().contains("refresh-token")) {
                         request.setAttribute("claims", e.getClaims());
-                    }
-                    else
-                    {
+                    } else {
                         response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-                        response.getOutputStream().println("jwt_expired");
+                        response.getOutputStream().print("JWT expired");
                     }
                 }
             }

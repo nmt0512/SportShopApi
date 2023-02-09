@@ -20,4 +20,5 @@ public class BillDto {
 
     private Boolean confirm;
     private Boolean status;
+    private Boolean delivered;
 }
