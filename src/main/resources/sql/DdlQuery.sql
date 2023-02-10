@@ -135,5 +135,5 @@ ADD Avatar varchar(255)
 
 DROP TABLE Cart
 
-ALTER TABLE Bill
-ALTER COLUMN Delivered bit NULL
+ALTER TABLE Item
+ALTER COLUMN Size nvarchar(10)

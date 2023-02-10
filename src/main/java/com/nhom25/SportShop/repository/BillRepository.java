@@ -17,4 +17,5 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
     @Query(value = "SELECT SUM(TotalPrice) FROM Bill WHERE FORMAT(Time, 'MM/yyyy') = :time AND Status = 1", nativeQuery = true)
     Integer findSumTotalPriceByMonth(@Param("time") String time);
     List<Bill> findByUsername(String username);
+    List<Bill> findByDeliveredAndStatus(Boolean delivered, Boolean status);
 }

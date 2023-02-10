@@ -21,4 +21,7 @@ public interface BillService {
     List<BillDetail> findByCurrentUsername();
     List<BillDetail> setDeliveredBillById(List<Integer> billIdList);
     List<BillDetail> undoDeliveredBillById(List<Integer> billIdList);
+    List<BillDetail> getDeliveredBill();
+    List<BillDetail> getDeliveringBill();
+    BillDetail getBillById(Integer id);
 }

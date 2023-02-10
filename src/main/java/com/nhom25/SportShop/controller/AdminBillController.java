@@ -62,7 +62,7 @@ public class AdminBillController {
     }
 
     @ApiOperation(value = "Xác nhận đã giao hàng")
-    @PostMapping("/delivered")
+    @PostMapping("/set-delivered")
     public List<BillDetail> setDeliveredBill(@RequestParam("id") List<Integer> billIdList)
     {
         return billService.setDeliveredBillById(billIdList);
@@ -98,6 +98,27 @@ public class AdminBillController {
         ResponseData<List<RevenueDto>> data = new ResponseData<>();
         data.setData(billService.getAllMonthTotalRevenue());
         return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
+    }
+
+    @ApiOperation(value = "Lấy thông tin các đơn hàng đang giao")
+    @GetMapping("/delivering")
+    public List<BillDetail> getAllDeliveringBill()
+    {
+        return billService.getDeliveringBill();
+    }
+
+    @ApiOperation(value = "Lấy thông tin các đơn hàng đã giao")
+    @GetMapping("/delivered")
+    public List<BillDetail> getAllDeliveredBill()
+    {
+        return billService.getDeliveredBill();
+    }
+
+    @ApiOperation(value = "Lấy thông tin đơn hàng theo id")
+    @GetMapping
+    public BillDetail getBillById(@RequestParam("id") Integer id)
+    {
+        return billService.getBillById(id);
     }
 
 }

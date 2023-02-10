@@ -38,7 +38,7 @@ public class HomeItemController {
 			@RequestParam(value = "price", required = false) Integer price,
 			@ApiParam(value = "Phân loại size", defaultValue = "M,L")
 			@RequestParam(value = "size", required = false) List<String> sizeList){
-		if(categoryCodeList == null && colorList == null && price == null)
+		if(categoryCodeList == null && colorList == null && price == null && sizeList == null)
 			return itemService.findItemByGeneralCategory(code);
 		else
 			return itemService.filterItem(code, categoryCodeList, colorList, sizeList, price);

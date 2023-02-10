@@ -15,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,12 +48,8 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillDetail> findBillByDay(String day) {
-        try {
-            List<Bill> listBill = billRepo.findByDay(parseDate(day));
-            return getResult(listBill);
-        } catch (ParseException e) {
-            return null;
-        }
+        List<Bill> listBill = billRepo.findByDay(day);
+        return getResult(listBill);
     }
 
     @Override
@@ -135,6 +128,22 @@ public class BillServiceImpl implements BillService {
         return handleBillById(billIdList, null, false);
     }
 
+    @Override
+    public List<BillDetail> getDeliveredBill() {
+        return getResult(billRepo.findByDeliveredAndStatus(true, true));
+    }
+
+    @Override
+    public List<BillDetail> getDeliveringBill() {
+        return getResult(billRepo.findByDeliveredAndStatus(false, true));
+    }
+
+    @Override
+    public BillDetail getBillById(Integer id) {
+        Bill bill = billRepo.getById(id);
+        List<BillItem> billItemList = billItemRepo.findByBillId(id);
+        return converter.toBillDetail(bill, billItemList);
+    }
 
     private List<BillDetail> getResult(List<Bill> billList) {
         List<BillDetail> result = new ArrayList<>();
@@ -152,31 +161,19 @@ public class BillServiceImpl implements BillService {
         List<Bill> listBill = new ArrayList<>();
         for (Integer id : billIdList) {
             Bill bill = billRepo.getById(id);
-            if(isConfirmBill != null)
-            {
-                if (isConfirmBill)
-                {
+            if (isConfirmBill != null) {
+                if (isConfirmBill) {
                     bill.setConfirm(attribute);
-                    if(attribute)
+                    if (attribute)
                         bill.setDelivered(false);
                     else
                         bill.setDelivered(null);
-                }
-                else
+                } else
                     bill.setStatus(attribute);
-            }
-            else
+            } else
                 bill.setDelivered(attribute);
             listBill.add(billRepo.save(bill));
         }
         return getResult(listBill);
-    }
-
-    private String parseDate(String date) throws ParseException {
-        java.util.Date utilDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        String formattedDay = dateFormat.format(sqlDate);
-        return formattedDay;
     }
 }

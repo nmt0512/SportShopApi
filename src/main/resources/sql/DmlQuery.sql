@@ -43,17 +43,27 @@ INSERT INTO Category(Code, Name, GeneralCode) VALUES('quan-bo', N'Quần bò', '
 ALTER TABLE Item
 ADD Image varchar(255)
 
-INSERT INTO Image(Link, ItemId) 
-VALUES('https://res.cloudinary.com/chidung2302/image/upload/v1672906549/WebSport/images/products/england-away-kit-2022-2_dsrlbf.webp', 5)
-INSERT INTO Image(Link, ItemId) 
-VALUES('https://res.cloudinary.com/chidung2302/image/upload/v1672906549/WebSport/images/products/england-away-kit-2022-2_dsrlbf.webp', 6)
-INSERT INTO Image(Link, ItemId) 
-VALUES('https://res.cloudinary.com/chidung2302/image/upload/v1672906549/WebSport/images/products/england-away-kit-2022-2_dsrlbf.webp', 7)
+SELECT * FROM Item
+SELECT * FROM Image
 
+INSERT INTO Image(Link, ItemId) 
+VALUES('https://res.cloudinary.com/chidung2302/image/upload/v1675961220/WebSport/images/products/astrel-100-2_feko56.jpg', 61)
+INSERT INTO Image(Link, ItemId) 
+VALUES('https://res.cloudinary.com/chidung2302/image/upload/v1675960842/WebSport/images/products/mu-away-kit-2023_a7d7ah.jpg', 2)
+INSERT INTO Image(Link, ItemId) 
+VALUES('https://res.cloudinary.com/chidung2302/image/upload/v1672905572/WebSport/images/products/ball-c1-2020-2.webp', 8)
 
-INSERT INTO Bill(Username, Time, Confirm, Status) VALUES('u2', GETDATE(), 0, 1)
+SELECT * FROM Bill
 
-INSERT INTO BillItem(BillId, ItemId, Quantity, Price) VALUES(3, 8, 1, 600000)
+SELECT * FROM BillItem
+
+INSERT INTO Bill(Username, Time, Confirm, Status, TotalPrice) VALUES('u2', '11/02/2022', 0, 1, 8000000)
+
+UPDATE Bill SET TotalPrice = 4000000 WHERE Month(Time) = 11
+
+UPDATE BillItem SET Price = 4000000 WHERE BillId IN (13,18)
+
+INSERT INTO BillItem(BillId, ItemId, Quantity, Price) VALUES(18, 61, 2, 8000000)
 
 INSERT INTO Cart(Username, ItemId, Quantity, Price) VALUES('u2', 1, 2, 240000)
 
@@ -77,3 +87,7 @@ GROUP BY ItemId ORDER BY COUNT(ItemId) DESC)
 SELECT * FROM Bill WHERE FORMAT(Time, 'dd/MM/yyyy') = '05/01/2023'
 
 UPDATE Bill SET Delivered = 0 WHERE BillId IN (3,4,5,9)
+
+UPDATE Item SET Size = 'Medium' WHERE Size = N'Vừa'
+
+UPDATE Item SET Color = 'white' WHERE ItemId = 20
