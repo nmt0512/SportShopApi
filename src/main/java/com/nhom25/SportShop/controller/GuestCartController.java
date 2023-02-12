@@ -1,6 +1,5 @@
 package com.nhom25.SportShop.controller;
 
-import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.entity.GuestCart;
 import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.response.ResponseUtils;
@@ -21,9 +20,17 @@ public class GuestCartController {
 
     @ApiOperation(value = "Thêm sản phẩm vào giỏ hàng của khách vãng lai")
     @PostMapping("/add")
-    public ResponseEntity addToGuestCart(@RequestBody ItemDto itemDto, HttpServletRequest request)
+    public ResponseEntity addToGuestCart(@RequestBody GuestCart guestCart, HttpServletRequest request)
     {
-        ResponseData<List<GuestCart>> data = guestCartService.save(itemDto, request.getSession());
+        ResponseData<GuestCart> data = guestCartService.addGuestCart(request.getSession().getId(), guestCart);
+        return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
+    }
+
+    @ApiOperation(value = "Chỉnh sửa sản phẩm trong giỏ hàng của khách vãng lai")
+    @PostMapping("/update")
+    public ResponseEntity updateGuestCart(@RequestBody GuestCart guestCart, HttpServletRequest request)
+    {
+        ResponseData<GuestCart> data = guestCartService.updateGuestCart(request.getSession().getId(), guestCart);
         return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 
@@ -31,15 +38,15 @@ public class GuestCartController {
     @GetMapping
     public ResponseEntity getAllGuestCart(HttpServletRequest request)
     {
-        ResponseData<List<GuestCart>> data = guestCartService.findAll(request.getSession());
+        ResponseData<List<GuestCart>> data = guestCartService.getAllGuestCart(request.getSession().getId());
         return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
     }
 
     @ApiOperation(value = "Xóa các sản phẩm trong giỏ hàng khách vãng lai")
     @PostMapping("/delete")
-    public ResponseEntity deleteGuestCart(HttpServletRequest request)
+    public ResponseEntity deleteGuestCart(@RequestParam("id") List<Integer> idList, HttpServletRequest request)
     {
-        guestCartService.deleteAll(request.getSession());
+        guestCartService.deleteGuestCart(request.getSession().getId(), idList);
         return ResponseUtils.success();
     }
 

@@ -1,20 +1,26 @@
 package com.nhom25.SportShop.entity;
 
-import com.nhom25.SportShop.dto.ItemDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@RedisHash("GuestCart")
 public class GuestCart implements Serializable {
-    private String sessionId;
-    private String itemDetail;
+    private static final long serialVersionUID = -7817224776021728682L;
+
+    private Integer id;
+    private Integer itemId;
+    private String name;
+    private String code;
+    private String size;
+    private String color;
+    private String type;
+    private Short quantity;
+    private Integer price;
 }
