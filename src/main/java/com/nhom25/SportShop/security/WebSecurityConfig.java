@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAccessDeniedHandler accessDeniedHandler;
     @Autowired
-    private UserDetailsServiceImpl userDetailService;
+    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService) //provide UserService for Spring Security
+        auth.userDetailsService(userDetailsService) //provide UserService for Spring Security
                 .passwordEncoder(passwordEncoder());
     }
 

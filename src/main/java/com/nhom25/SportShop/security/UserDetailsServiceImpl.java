@@ -21,7 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         //check the username is exist on database or not
-
         User user = userRepo.findByUsername(username);
         if (user == null)
             throw new UsernameNotFoundException(username);
