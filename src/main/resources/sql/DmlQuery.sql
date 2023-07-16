@@ -10,9 +10,9 @@ FROM OPENROWSET(Bulk 'D:\Workspace\Java Web Eclipse\SportShop\src\main\resources
 
 INSERT INTO Category(Code, Name, GeneralCode) VALUES('ao-bong-da-nam', N'Áo bóng đá nam', 'bong-da')
 
-INSERT INTO DBUser(Username, Password, Role, Name, Address, Phone, Email) VALUES('admin1', 'pw1', 1, 'admin1', 'Ha Noi', '0123456788', 'admin1@gmail.com')
+INSERT INTO DBUser(Username, Password, Role, Name, Address, Phone, Email) VALUES('admin2', '$2a$12$qzzPn9q1bGOBKIuQD7RCY.wUrIq2hwTsYzN3lsj8qThH/ckakor/u', 1, 'admin1', 'Ha Noi', '0123456788', 'admin2@gmail.com')
 
-SELECT * FROM DBUser
+SELECT * FROM DBUser WHERE Role = 1
 
 SELECT * FROM Cart
 
@@ -22,6 +22,8 @@ SELECT * FROM BillItem
 
 SELECT * FROM Item
 
+SELECT Code, COUNT(*) FROM Item WHERE Size = 'XL' GROUP BY Code HAVING COUNT(*) > 2
+
 SELECT * FROM GeneralCategory
 
 SELECT * FROM Category
@@ -29,6 +31,8 @@ SELECT * FROM Category
 SELECT * FROM Image
 
 SELECT * FROM Bill WHERE YEAR(Time) = 2023 AND MONTH(Time) = 1
+
+
 
 UPDATE Item SET Quantity = 1 WHERE ItemId = 62
 

@@ -1,5 +1,6 @@
 package com.nhom25.SportShop.controller;
 
+import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.response.ResponseUtils;
 import org.hibernate.PropertyValueException;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(PropertyValueException.class)
-    public ResponseEntity handleNullProperty(PropertyValueException e)
-    {
+    public ResponseEntity<ResponseData<Void>> handleNullProperty(PropertyValueException e) {
         return ResponseUtils.error(400, "Bad Request", HttpStatus.BAD_REQUEST);
     }
 }

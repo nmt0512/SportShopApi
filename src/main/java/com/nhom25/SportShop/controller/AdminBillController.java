@@ -23,7 +23,7 @@ public class AdminBillController {
     @ApiOperation(value = "Lấy thông tin tất cả các Bill")
     @GetMapping("/all")
     public List<BillDetail> getAllBill(@ApiParam(value = "Trạng thái xác nhận của Bill: Đã xác nhận(true), Chưa xác nhận(false)") @RequestParam(name = "param", required = false) Boolean confirm) {
-        if(confirm != null)
+        if (confirm != null)
             return billService.findBillByConfirm(confirm);
         return billService.findAllBill();
     }
@@ -42,50 +42,43 @@ public class AdminBillController {
 
     @ApiOperation(value = "Lấy thông tin Bill theo tháng")
     @GetMapping("/month")
-    public List<BillDetail> getBillByMonth(@ApiParam(value = "Tháng", defaultValue = "01/2023") @RequestParam(name = "param") String month)
-    {
+    public List<BillDetail> getBillByMonth(@ApiParam(value = "Tháng", defaultValue = "01/2023") @RequestParam(name = "param") String month) {
         return billService.findBillByMonth(month);
     }
 
     @ApiOperation(value = "Duyệt Bill")
     @PostMapping("/confirm")
-    public List<BillDetail> confirmBill(@RequestParam("id") List<Integer> billIdList)
-    {
+    public List<BillDetail> confirmBill(@RequestParam("id") List<Integer> billIdList) {
         return billService.confirmBillById(billIdList);
     }
 
     @ApiOperation(value = "Hủy duyệt Bill")
     @PostMapping("/unconfirm")
-    public List<BillDetail> unconfirmBill(@RequestParam("id") List<Integer> billIdList)
-    {
+    public List<BillDetail> unconfirmBill(@RequestParam("id") List<Integer> billIdList) {
         return billService.undoConfirmBillById(billIdList);
     }
 
     @ApiOperation(value = "Xác nhận đã giao hàng")
     @PostMapping("/set-delivered")
-    public List<BillDetail> setDeliveredBill(@RequestParam("id") List<Integer> billIdList)
-    {
+    public List<BillDetail> setDeliveredBill(@RequestParam("id") List<Integer> billIdList) {
         return billService.setDeliveredBillById(billIdList);
     }
 
     @ApiOperation(value = "Undo xác nhận đã giao hàng")
     @PostMapping("/undo-delivered")
-    public List<BillDetail> undoDeliveredBill(@RequestParam("id") List<Integer> billIdList)
-    {
+    public List<BillDetail> undoDeliveredBill(@RequestParam("id") List<Integer> billIdList) {
         return billService.undoDeliveredBillById(billIdList);
     }
 
     @ApiOperation(value = "Hủy Bill")
     @PostMapping("/cancel")
-    public List<BillDetail> cancelBill(@RequestParam("id") List<Integer> billIdList)
-    {
+    public List<BillDetail> cancelBill(@RequestParam("id") List<Integer> billIdList) {
         return billService.cancelBillById(billIdList);
     }
 
     @ApiOperation(value = "Xem doanh số theo tháng")
     @GetMapping("/revenue")
-    public ResponseEntity getRevenueByMonth(@RequestParam("month") String month)
-    {
+    public ResponseEntity<ResponseData<Integer>> getRevenueByMonth(@RequestParam("month") String month) {
         ResponseData<Integer> data = new ResponseData<>();
         data.setData(billService.getRevenueByMonth(month));
         return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
@@ -93,8 +86,7 @@ public class AdminBillController {
 
     @ApiOperation(value = "Xem doanh số tất cả các tháng")
     @GetMapping("/revenue/all")
-    public ResponseEntity getAllMonthTotalRevenue()
-    {
+    public ResponseEntity<ResponseData<List<RevenueDto>>> getAllMonthTotalRevenue() {
         ResponseData<List<RevenueDto>> data = new ResponseData<>();
         data.setData(billService.getAllMonthTotalRevenue());
         return ResponseUtils.success(data.getData(), data.getCode(), data.getMessage());
@@ -102,22 +94,19 @@ public class AdminBillController {
 
     @ApiOperation(value = "Lấy thông tin các đơn hàng đang giao")
     @GetMapping("/delivering")
-    public List<BillDetail> getAllDeliveringBill()
-    {
+    public List<BillDetail> getAllDeliveringBill() {
         return billService.getDeliveringBill();
     }
 
     @ApiOperation(value = "Lấy thông tin các đơn hàng đã giao")
     @GetMapping("/delivered")
-    public List<BillDetail> getAllDeliveredBill()
-    {
+    public List<BillDetail> getAllDeliveredBill() {
         return billService.getDeliveredBill();
     }
 
     @ApiOperation(value = "Lấy thông tin đơn hàng theo id")
     @GetMapping
-    public BillDetail getBillById(@RequestParam("id") Integer id)
-    {
+    public BillDetail getBillById(@RequestParam("id") Integer id) {
         return billService.getBillById(id);
     }
 

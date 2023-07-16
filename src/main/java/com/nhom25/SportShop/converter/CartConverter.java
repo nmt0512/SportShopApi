@@ -12,7 +12,6 @@ public class CartConverter {
     private ModelMapper mapper;
 
     public CartDto toDto(Cart entity) {
-        CartDto dto = mapper.map(entity, CartDto.class);
-        return dto;
+        return mapper.map(entity, CartDto.class);
     }
 }

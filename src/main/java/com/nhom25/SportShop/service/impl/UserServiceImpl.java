@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto addUser(UserDto dto) {
+    public UserDto addUser(UserDto dto) throws ParseException {
         User userEntity = converter.toEntity(dto);
         userEntity.setRole(false);
         return converter.toDto(userRepo.save(userEntity));
@@ -48,8 +50,7 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUserPassword(ChangingPasswordDto changingPasswordDto) {
         String currentUsername = userDetailsService.getCurrentUsername();
         String currentPassword = userDetailsService.loadUserByUsername(currentUsername).getPassword();
-        if(passwordEncoder.matches(changingPasswordDto.getOldPassword(), currentPassword))
-        {
+        if (passwordEncoder.matches(changingPasswordDto.getOldPassword(), currentPassword)) {
             String encodedNewPassword = passwordEncoder.encode(changingPasswordDto.getNewPassword());
             userRepo.updateUserPassword(encodedNewPassword, currentUsername);
             User userEntity = userRepo.findByUsername(currentUsername);

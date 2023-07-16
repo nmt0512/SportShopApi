@@ -17,7 +17,7 @@ public class GuestCartServiceImpl implements GuestCartService {
 
     @Override
     public ResponseData<GuestCart> addGuestCart(String sessionId, GuestCart guestCart) {
-        guestCart.setId(autoIncreasingId ++);
+        guestCart.setId(autoIncreasingId++);
         guestCartRepo.save(sessionId, guestCart);
         ResponseData<GuestCart> data = new ResponseData<>();
         data.setData(guestCart);
@@ -41,7 +41,7 @@ public class GuestCartServiceImpl implements GuestCartService {
 
     @Override
     public void deleteGuestCart(String sessionId, List<Integer> guestCartIdList) {
-        for(Integer guestCartId: guestCartIdList)
+        for (Integer guestCartId : guestCartIdList)
             guestCartRepo.deleteById(sessionId, guestCartId);
     }
 }

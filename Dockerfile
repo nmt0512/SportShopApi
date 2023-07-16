@@ -1,6 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
-MAINTAINER nmt0512
-WORKDIR /opt/app
+FROM jimschubert/8-jdk-alpine-mvn
 ARG JAR_FILE=target/SportShop-1.0.jar
-COPY ${JAR_FILE} sport-shop-docker.jar
-ENTRYPOINT ["java","-jar","sport-shop-docker.jar"]
+COPY ${JAR_FILE} sport-shop-docker-1.0.jar
+ENTRYPOINT ["java","-jar","/sport-shop-docker-1.0.jar"]

@@ -30,7 +30,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-
         String username = null;
         String jwtToken = null;
         if (request.getHeader(SystemConstant.AUTHORIZATION_HEADER) != null) {
@@ -40,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 try {
                     username = jwtUtil.getUsernameFromToken(jwtToken);
                 } catch (IllegalArgumentException | MalformedJwtException e) {
-                    String url = request.getRequestURL().toString();
                     if (!request.getRequestURL().toString().contains("/home")) {
                         response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                         response.getOutputStream().print("JWT wrong");

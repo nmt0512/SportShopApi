@@ -33,15 +33,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findAllItem() {
         List<Item> entityList = itemRepo.findAll();
-        List<ItemDto> result = converter.toDtoList(entityList);
-        return result;
+        return converter.toDtoList(entityList);
     }
 
     @Override
     public List<ItemDto> searchByName(String name) {
         List<Item> entityList = itemRepo.findByNameContaining(name);
-        List<ItemDto> result = converter.toDtoList(entityList);
-        return result;
+        return converter.toDtoList(entityList);
     }
 
     @Override
@@ -57,18 +55,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto findById(Integer itemId) {
-        ItemDto dto = converter.toDto(itemRepo.getById(itemId));
-        return dto;
+        return converter.toDto(itemRepo.getById(itemId));
     }
 
     @Override
     public List<ItemDto> addItem(ItemRequestDto itemRequestDto) {
         List<ItemDto> result = new ArrayList<>();
         List<Item> itemEntityList = converter.toEntityList(itemRequestDto);
-        for(Item entity: itemRepo.saveAll(itemEntityList))
-        {
-            for(String imageLink: itemRequestDto.getImages())
-            {
+        for (Item entity : itemRepo.saveAll(itemEntityList)) {
+            for (String imageLink : itemRequestDto.getImages()) {
                 Image image = new Image();
                 image.setItemId(entity.getId());
                 image.setLink(imageLink);
@@ -83,8 +78,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> updateItem(List<ItemDto> itemDtoList) {
         List<ItemDto> result = new ArrayList<>();
-        for(ItemDto dto: itemDtoList)
-        {
+        for (ItemDto dto : itemDtoList) {
             Item newEntity = converter.toEntity(dto);
             Item oldEntity = itemRepo.getById(dto.getId());
             newEntity.setCode(convertNameToCode(newEntity.getName()));
@@ -122,20 +116,13 @@ public class ItemServiceImpl implements ItemService {
         List<ItemDto> result = findItemByGeneralCategory(gcCode);
         List<ItemDto> removeList = new ArrayList<>();
         for (ItemDto item : result) {
-            if (categoryCodeList != null && !categoryCodeList.contains(item.getCategoryCode()))
-            {
+            if (categoryCodeList != null && !categoryCodeList.contains(item.getCategoryCode())) {
                 removeList.add(item);
-            }
-            else if (colorList != null && !colorList.contains(item.getColor()))
-            {
+            } else if (colorList != null && !colorList.contains(item.getColor())) {
                 removeList.add(item);
-            }
-            else if(sizeList != null && !sizeList.contains(item.getSize()))
-            {
+            } else if (sizeList != null && !sizeList.contains(item.getSize())) {
                 removeList.add(item);
-            }
-            else if(price != null && item.getPrice() >= price)
-            {
+            } else if (price != null && item.getPrice() >= price) {
                 removeList.add(item);
             }
         }
@@ -146,29 +133,25 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> findLatestItemInWeek() {
         List<Item> entityList = itemRepo.findLatestItemInWeek();
-        List<ItemDto> result = converter.toDtoList(entityList);
-        return result;
+        return converter.toDtoList(entityList);
     }
 
     @Override
     public List<ItemDto> findByCode(String code) {
         List<Item> entityList = itemRepo.findByCode(code);
-        List<ItemDto> result = converter.toDtoList(entityList);
-        return result;
+        return converter.toDtoList(entityList);
     }
 
     @Override
     public List<ItemDto> getMostPopularItem() {
         List<Item> entityList = itemRepo.getMostRevenueItem();
-        List<ItemDto> result = converter.toDtoList(entityList);
-        return result;
+        return converter.toDtoList(entityList);
     }
 
     @Override
     public List<ItemDto> getBestSellerItemInWeek() {
         List<Item> entityList = itemRepo.getBestSellerItem();
-        List<ItemDto> result = converter.toDtoList(entityList);
-        return result;
+        return converter.toDtoList(entityList);
     }
 
     private String convertNameToCode(String name) {

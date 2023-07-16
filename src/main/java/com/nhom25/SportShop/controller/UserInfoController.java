@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @CrossOrigin(maxAge = 7200)
 @RestController
 @RequestMapping("/home")
@@ -20,14 +22,11 @@ public class UserInfoController {
 
     @ApiOperation(value = "Xác thực username hay email đã tồn tại hay chưa")
     @PostMapping("/user/validate")
-    public ResponseEntity validateUser(@RequestBody UserDto userDto) {
-        if(userService.isEmailExisted(userDto.getEmail()))
-        {
-            return ResponseUtils.error(400, "Email already exists",HttpStatus.BAD_REQUEST);
-        }
-        else if(userService.isUsernameExisted(userDto.getUsername()))
-        {
-            return ResponseUtils.error(400, "Username already exists",HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseData<Void>> validateUser(@RequestBody UserDto userDto) {
+        if (userService.isEmailExisted(userDto.getEmail())) {
+            return ResponseUtils.error(400, "Email already exists", HttpStatus.BAD_REQUEST);
+        } else if (userService.isUsernameExisted(userDto.getUsername())) {
+            return ResponseUtils.error(400, "Username already exists", HttpStatus.BAD_REQUEST);
         }
         return ResponseUtils.success();
     }
@@ -40,20 +39,23 @@ public class UserInfoController {
 
     @ApiOperation(value = "Đổi mật khẩu người dùng")
     @PostMapping("/user/password")
-    public ResponseEntity updateUserPassword(@RequestBody ChangingPasswordDto changingPasswordDto)
-    {
+    public ResponseEntity<ResponseData<UserDto>> updateUserPassword(@RequestBody ChangingPasswordDto changingPasswordDto) {
         UserDto userDto = userService.updateUserPassword(changingPasswordDto);
         ResponseData<UserDto> data = new ResponseData<>();
         data.setData(userDto);
-        return ResponseUtils.success(data);
+        return ResponseUtils.success(data.getData());
     }
 
     @ApiOperation(value = "Đăng ký")
     @PostMapping("/user/register")
-    public ResponseEntity registerUser(@RequestBody UserDto userDto) {
-        UserDto user = userService.addUser(userDto);
-        ResponseData<UserDto> data = new ResponseData<>();
-        data.setData(user);
-        return ResponseUtils.success(data);
+    public ResponseEntity<ResponseData<UserDto>> registerUser(@RequestBody UserDto userDto) {
+        try {
+            UserDto user = userService.addUser(userDto);
+            ResponseData<UserDto> data = new ResponseData<>();
+            data.setData(user);
+            return ResponseUtils.success(data.getData());
+        } catch (ParseException e) {
+            return ResponseUtils.error(400, "Wrong date format", HttpStatus.BAD_REQUEST);
+        }
     }
 }

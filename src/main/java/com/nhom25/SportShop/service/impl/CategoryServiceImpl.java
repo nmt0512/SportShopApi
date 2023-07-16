@@ -23,12 +23,10 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse getCategoryAndGeneralCategoryNames() {
         List<String> generalCategoryNameList = new ArrayList<>();
         List<String> categoryNameList = new ArrayList<>();
-        for(GeneralCategory gc: generalCategoryRepo.findAll())
-        {
+        for (GeneralCategory gc : generalCategoryRepo.findAll()) {
             generalCategoryNameList.add(gc.getName());
         }
-        for(Category cate: categoryRepo.findByGeneralCode("dung-cu"))
-        {
+        for (Category cate : categoryRepo.findByGeneralCode("dung-cu")) {
             categoryNameList.add(cate.getName());
         }
         return new CategoryResponse(generalCategoryNameList, categoryNameList);

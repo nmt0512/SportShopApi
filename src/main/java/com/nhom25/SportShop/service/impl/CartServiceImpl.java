@@ -7,7 +7,6 @@ import com.nhom25.SportShop.dto.ItemDto;
 import com.nhom25.SportShop.dto.PaymentCartDto;
 import com.nhom25.SportShop.entity.Cart;
 import com.nhom25.SportShop.repository.CartRepository;
-import com.nhom25.SportShop.repository.ItemRepository;
 import com.nhom25.SportShop.repository.UserRepository;
 import com.nhom25.SportShop.security.UserDetailsServiceImpl;
 import com.nhom25.SportShop.service.BillService;
@@ -32,23 +31,18 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ItemRepository itemRepository;
-    @Autowired
     private CartConverter converter;
 
     @Override
     public Cart addToCart(ItemDto itemDto) {
         Cart cartEntity = cartRepo.findByUsernameAndItemId(userDetailService.getCurrentUsername(), itemDto.getId());
-        if(cartEntity == null)
-        {
+        if (cartEntity == null) {
             cartEntity = new Cart();
             cartEntity.setItemId(itemDto.getId());
             cartEntity.setQuantity(itemDto.getQuantity());
             cartEntity.setPrice(itemDto.getPrice());
             cartEntity.setUsername(userDetailService.getCurrentUsername());
-        }
-        else
-        {
+        } else {
             short oldQuantity = cartEntity.getQuantity();
             Integer oldPrice = cartEntity.getPrice();
             cartEntity.setQuantity((short) (oldQuantity + itemDto.getQuantity()));
@@ -60,8 +54,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public List<CartDto> getAllItemInCart() {
         List<CartDto> result = new ArrayList<>();
-        for(Cart cart: cartRepo.findByUsername(userDetailService.getCurrentUsername()))
-        {
+        for (Cart cart : cartRepo.findByUsername(userDetailService.getCurrentUsername())) {
             ItemDto itemDto = itemService.findById(cart.getItemId());
             CartDto cartDto = converter.toDto(cart);
             cartDto.setItemDto(itemDto);
@@ -86,8 +79,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public BillDetail paymentCart(PaymentCartDto paymentCartDto) {
         List<Cart> cartList = paymentCartDto.getCartList();
-        for(Cart cart: cartList)
-        {
+        for (Cart cart : cartList) {
             cartRepo.deleteById(cart.getId());
         }
         itemService.subtractPaymentItem(cartList);

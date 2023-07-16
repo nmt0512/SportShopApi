@@ -7,15 +7,16 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import java.util.Objects;
+
 @Configuration
 public class JdbcTemplateConfig {
     @Autowired
     private Environment environment;
 
-    private DriverManagerDataSource getDriverManagerDataSource()
-    {
+    private DriverManagerDataSource getDriverManagerDataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName(environment.getProperty("spring.datasource.driverClassName"));
+        ds.setDriverClassName(Objects.requireNonNull(environment.getProperty("spring.datasource.driverClassName")));
         ds.setUrl(environment.getProperty("spring.datasource.url"));
         ds.setUsername(environment.getProperty("spring.datasource.username"));
         ds.setPassword(environment.getProperty("spring.datasource.password"));
@@ -23,7 +24,7 @@ public class JdbcTemplateConfig {
     }
 
     @Bean
-    public JdbcTemplate getJdbcTemplate(){
+    public JdbcTemplate getJdbcTemplate() {
         return new JdbcTemplate(getDriverManagerDataSource());
     }
 

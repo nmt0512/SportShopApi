@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-	List<Item> findAll();
 	List<Item> findByCategoryCode(String categoryCode);
 	List<Item> findByNameContaining(String name);
 	@Query(value = "SELECT * FROM Item WHERE Code = :code AND Color = :color AND Size = :size", nativeQuery = true)

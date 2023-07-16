@@ -22,21 +22,18 @@ public class BillConverter {
     @Autowired
     private ItemService itemService;
 
-    public BillDetail toBillDetail(Bill billEntity, List<BillItem> billItemEntityList)
-    {
+    public BillDetail toBillDetail(Bill billEntity, List<BillItem> billItemEntityList) {
         BillDetail billDetail = new BillDetail();
         billDetail.setBillDto(toBillDto(billEntity));
         List<BillItemDto> billItemDtoList = new ArrayList<>();
-        for(BillItem entity: billItemEntityList)
-        {
+        for (BillItem entity : billItemEntityList) {
             billItemDtoList.add(toBillItemDto(entity));
         }
         billDetail.setBillItemDtoList(billItemDtoList);
         return billDetail;
     }
 
-    private BillDto toBillDto(Bill billEntity)
-    {
+    private BillDto toBillDto(Bill billEntity) {
         BillDto billDto = mapper.map(billEntity, BillDto.class);
         User user = userRepo.findByUsername(billEntity.getUsername());
         BillUserDto billUserDto = mapper.map(user, BillUserDto.class);
@@ -44,8 +41,7 @@ public class BillConverter {
         return billDto;
     }
 
-    private BillItemDto toBillItemDto(BillItem billItemEntity)
-    {
+    private BillItemDto toBillItemDto(BillItem billItemEntity) {
         BillItemDto billItemDto = mapper.map(billItemEntity, BillItemDto.class);
         ItemDto itemDto = itemService.findById(billItemEntity.getItemId());
         billItemDto.setItemDto(itemDto);

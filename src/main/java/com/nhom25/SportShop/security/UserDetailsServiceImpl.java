@@ -18,6 +18,7 @@ import java.util.Collections;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepo;
+
     @Override
     public UserDetails loadUserByUsername(String username) {
         //check the username is exist on database or not
@@ -28,12 +29,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole() ? "ROLE_ADMIN" : "ROLE_USER")));
     }
 
-    public String getCurrentUsername()
-    {
+    public String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            return currentUserName;
+            return authentication.getName();
         }
         return null;
     }

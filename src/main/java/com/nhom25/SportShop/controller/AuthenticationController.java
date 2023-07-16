@@ -3,6 +3,7 @@ package com.nhom25.SportShop.controller;
 import com.nhom25.SportShop.dto.LoginDto;
 import com.nhom25.SportShop.dto.LoginResponseDto;
 import com.nhom25.SportShop.jwt.JwtUtil;
+import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +33,7 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Đăng nhập và lấy JWT")
     @PostMapping("/login")
-    public ResponseEntity createAuthenticationToken(@RequestBody LoginDto loginDto) throws Exception {
+    public ResponseEntity<LoginResponseDto> createAuthenticationToken(@RequestBody LoginDto loginDto) throws Exception {
         authenticate(loginDto.getUsername(), loginDto.getPassword());
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginDto.getUsername());
         String token = jwtUtil.generateToken(userDetails);
@@ -43,7 +44,7 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Refresh JWT")
     @GetMapping("/refresh-token")
-    public ResponseEntity refreshAuthenticationToken(HttpServletRequest request) {
+    public ResponseEntity<LoginResponseDto> refreshAuthenticationToken(HttpServletRequest request) {
         DefaultClaims claims = (DefaultClaims) request.getAttribute("claims");
         Map<String, Object> claimsMap = JwtUtil.getMapFromClaims(claims);
         String token = jwtUtil.doGenerateRefreshToken(claimsMap, claims.getSubject());

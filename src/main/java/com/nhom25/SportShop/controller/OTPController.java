@@ -1,6 +1,7 @@
 package com.nhom25.SportShop.controller;
 
 import com.nhom25.SportShop.dto.OtpValidationDto;
+import com.nhom25.SportShop.response.ResponseData;
 import com.nhom25.SportShop.response.ResponseUtils;
 import com.nhom25.SportShop.service.UserService;
 import com.nhom25.SportShop.verification.email.EmailService;
@@ -29,7 +30,7 @@ public class OTPController {
 
     @ApiOperation(value = "Tạo mã OTP")
     @PostMapping("/generate-otp")
-    public ResponseEntity generateOTP(@ApiParam(value = "Email người dùng", required = true, defaultValue = "user@gmail.com")
+    public ResponseEntity<ResponseData<Void>> generateOTP(@ApiParam(value = "Email người dùng", required = true, defaultValue = "user@gmail.com")
                                       @RequestParam("email") String email) {
         try {
             Integer otp = otpService.generateOTP(email);
@@ -42,7 +43,7 @@ public class OTPController {
 
     @ApiOperation(value = "Xác thực OTP")
     @PostMapping("/validate")
-    public ResponseEntity validateOTP(@RequestBody OtpValidationDto otpDto) {
+    public ResponseEntity<ResponseData<Void>> validateOTP(@RequestBody OtpValidationDto otpDto) {
         Boolean valid = otpValidation.validateOTP(otpDto.getEmail(), otpDto.getOtp());
         if (valid != null) {
             if (valid.equals(true)) {
