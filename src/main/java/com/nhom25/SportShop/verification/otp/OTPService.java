@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class OTPService {
     private static final Integer EXPIRE_MINS = 10;
-    private LoadingCache otpCache;
+    private LoadingCache<String, Integer> otpCache;
     public OTPService(){
         super();
         otpCache = CacheBuilder.newBuilder().
@@ -32,7 +32,7 @@ public class OTPService {
 
     public Integer getOtp(String key){
         try{
-            return (Integer)otpCache.get(key);
+            return otpCache.get(key);
         }
         catch (Exception e){
             return 0;
